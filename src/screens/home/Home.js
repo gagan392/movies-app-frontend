@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import './Home.css';
+import Header from '../../common/Header/Header';
 
 class Home extends Component {
 	render() {
 		return (
-			<div>Movie Home page</div>
+			<Header />
 		)
 	}
 }
