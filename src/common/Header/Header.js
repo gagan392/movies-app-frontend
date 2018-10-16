@@ -55,7 +55,8 @@ class Header extends Component {
 			value: 0,
 			username: "",
 			password: "",
-			usernameRequired: "dispNone"
+			usernameRequired: "dispNone",
+			passwordRequired: "dispNone"
 		});
 	}
 
