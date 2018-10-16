@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import './Home.css';
 import Header from '../../common/Header/Header';
 import { withStyles } from "@material-ui/core/styles";
-import MovieData from "../../common/movieData";
+import moviesData from "../../common/movieData";
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import GridListTileBar from '@material-ui/core/GridListTileBar';
 
 const styles = theme => ({
 	root: {
@@ -31,6 +34,14 @@ class Home extends Component {
 				<div className={classes.upcomingMoviesHeading}>
 					<span>Upcoming Movies</span>
 				</div>
+				<GridList cols={5} className={classes.gridListUpcomingMovies}>
+					{moviesData.map(movieData =>
+						<GridListTile key={movieData.id}>
+							<img src={movieData.poster_url} alt={movieData.title} />
+							<GridListTileBar title={movieData.title} />
+						</GridListTile>
+					)}
+				</GridList>
 			</div>
 		)
 	}
