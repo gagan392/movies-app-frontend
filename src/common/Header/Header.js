@@ -51,17 +51,17 @@ class Header extends Component {
 
 	openLoginModalHandler = () => {
 		this.setState({
-			showModal: true
+			showModal: true,
+			value: 0,
+			username: "",
+			password: "",
+			usernameRequired: "dispNone"
 		});
 	}
 
 	closeLoginModalHandler = () => {
 		this.setState({
-			showModal: false,
-			value: 0,
-			username: "",
-			password: "",
-			usernameRequired: "dispNone"
+			showModal: false
 		});
 	}
 
