@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 
 import { Typography, withStyles, GridList, GridListTile, GridListTileBar } from "@material-ui/core";
-import { ChevronLeft } from "@material-ui/icons";
+import ChevronLeft from "@material-ui/icons/ChevronLeft";
+import StarBorderIcon from "@material-ui/icons/StarBorder";
 import Youtube from "react-youtube";
 
 import Header from "../../common/Header/Header";
@@ -23,7 +24,34 @@ class MovieDetails extends Component {
 	constructor() {
 		super();
 		this.state = {
-			movie: {}
+			movie: {},
+			starIcons: [
+				{
+					id: 1,
+					stateId: "star1",
+					color: "black"
+				},
+				{
+					id: 2,
+					stateId: "star2",
+					color: "black"
+				},
+				{
+					id: 3,
+					stateId: "star3",
+					color: "black"
+				},
+				{
+					id: 4,
+					stateId: "star4",
+					color: "black"
+				},
+				{
+					id: 5,
+					stateId: "star5",
+					color: "black"
+				}
+			]
 		}
 	}
 
@@ -42,8 +70,25 @@ class MovieDetails extends Component {
 	}
 
 	artistClickHandler = (url) => {
-        window.location = url;
-    }
+		window.location = url;
+	}
+
+	starClickHandler = starId => {
+		const starIconsList = [];
+		this.state.starIcons.forEach(star => {
+			let starNode = star;
+			if (star.id <= starId) {
+				starNode.color = "yellow";
+			} else {
+				starNode.color = "black";
+			}
+			starIconsList.push(starNode);
+		});
+
+		this.setState({
+			starIcons: starIconsList
+		});
+	}
 
 	render() {
 		const { movie } = this.state;
@@ -102,13 +147,17 @@ class MovieDetails extends Component {
 						</div>
 					</div>
 					<div className="rightDetails">
+						<Typography><span className="bold">Rate this movie: </span></Typography>
+						{this.state.starIcons.map(star => (
+							<StarBorderIcon key={`star${star.id}`} className={star.color} onClick={() => this.starClickHandler(star.id)} />
+						))}
 						<Typography><span className="bold">Artists: </span>
 							<GridList cellHeight={350} cols={2}>
 								{movie.artists != null && movie.artists.map(artist =>
-										<GridListTile key={artist.id} onClick={() => this.artistClickHandler(artist.wiki_url)}>
-											<img src={artist.profile_url} alt={artist.title} />
-											<GridListTileBar title={artist.first_name + artist.last_name} />
-										</GridListTile>
+									<GridListTile key={artist.id} onClick={() => this.artistClickHandler(artist.wiki_url)}>
+										<img src={artist.profile_url} alt={artist.title} />
+										<GridListTileBar title={artist.first_name + artist.last_name} />
+									</GridListTile>
 								)}
 							</GridList></Typography>
 					</div>
