@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { GridList, withStyles, GridListTile, GridListTileBar } from "@material-ui/core";
-import { Link } from "react-router-dom";
 import moviesData from "../../../common/movieData";
 
 const styles = () => ({
