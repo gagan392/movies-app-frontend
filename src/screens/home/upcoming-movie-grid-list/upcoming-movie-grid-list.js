@@ -14,6 +14,12 @@ const styles = () => ({
 		flexWrap: 'nowrap',
 		transform: 'translateZ(0)',
 		width: '100%'
+	},
+	upcomingMoive: {
+		height: 'auto !important',
+		'& img': {
+			height: '15rem'
+		}
 	}
 });
 
@@ -27,7 +33,7 @@ class UpcomingMovieGridList extends Component {
 				</div>
 				<GridList cols={5} className={classes.gridListUpcomingMovies}>
 					{moviesData.map(movieData =>
-						<GridListTile key={movieData.id}>
+						<GridListTile key={movieData.id} className={classes.upcomingMoive}>
 							<img src={movieData.poster_url} alt={movieData.title} />
 							<GridListTileBar title={movieData.title} />
 						</GridListTile>
