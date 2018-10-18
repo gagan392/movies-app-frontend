@@ -16,7 +16,7 @@ import Input from "@material-ui/core/Input";
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import { Checkbox, ListItemText, TextField } from "@material-ui/core";
+import { Checkbox, ListItemText, TextField, Button } from "@material-ui/core";
 
 const styles = theme => ({
 	root: {
@@ -172,6 +172,9 @@ class Home extends Component {
 									></TextField>
 								</FormControl>
 
+								<FormControl className={classes.formControl}>
+									<Button variant="contained" color="primary"> Apply </Button>
+								</FormControl>
 							</CardContent>
 						</Card>
 					</div>
