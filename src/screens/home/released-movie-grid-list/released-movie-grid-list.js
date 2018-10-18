@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { GridList, withStyles, GridListTile, GridListTileBar } from "@material-ui/core";
-
+import { Link } from "react-router-dom";
 import moviesData from "../../../common/movieData";
 
 const styles = () => ({
@@ -16,10 +16,12 @@ class ReleasedMovieGridList extends Component {
 		return (
 			<GridList cellHeight={350} cols={4} className={classes.gridListReleasedMovies}>
 				{moviesData.map(movieData =>
-					<GridListTile key={movieData.id} className="released-movie-grid-item">
-						<img src={movieData.poster_url} className="movie-poster" alt={movieData.title} />
-						<GridListTileBar title={movieData.title} />
-					</GridListTile>
+					<Link key={movieData.id} to={`/details/${movieData.id}`}>
+						<GridListTile key={movieData.id} className="released-movie-grid-item">
+							<img src={movieData.poster_url} className="movie-poster" alt={movieData.title} />
+							<GridListTileBar title={movieData.title} />
+						</GridListTile>
+					</Link>
 				)}
 			</GridList>
 		);

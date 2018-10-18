@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import './Home.css';
 import { withStyles } from "@material-ui/core/styles";
 
@@ -6,6 +7,7 @@ import Header from '../../common/Header/Header';
 import UpcomingMovieGridList from "./upcoming-movie-grid-list/upcoming-movie-grid-list";
 import ReleasedMovieGridList from "./released-movie-grid-list/released-movie-grid-list";
 import MovieFilters from "./movie-filters/movie-filters";
+import MovieDetails from "../movie-details/movie-detials";
 
 const styles = theme => ({
 	root: {
@@ -53,18 +55,29 @@ class Home extends Component {
 		}
 
 		return (
-			<div>
-				<Header />
-				<UpcomingMovieGridList />
-				<div className="flex-container">
-					<div className="left">
-						<ReleasedMovieGridList />
-					</div>
-					<div className="right">
-						<MovieFilters {...movieFiltersProps} />
-					</div>
-				</div>
-			</div>
+			<Router>
+				<>
+					<Route exact path="/"
+						render={props => (
+							<div>
+								<Header />
+								<UpcomingMovieGridList />
+								<div className="flex-container">
+									<div className="left">
+										<ReleasedMovieGridList />
+									</div>
+									<div className="right">
+										<MovieFilters {...movieFiltersProps} />
+									</div>
+								</div>
+							</div>
+						)}
+					/>
+					<Route exact path="/details/:movieId" render={routeData => (
+						<MovieDetails routeData={routeData.match}/>
+					)}/>
+				</>
+			</Router>
 		)
 	}
 }
