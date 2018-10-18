@@ -16,7 +16,7 @@ import Input from "@material-ui/core/Input";
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
-import { Checkbox, ListItemText } from "@material-ui/core";
+import { Checkbox, ListItemText, TextField } from "@material-ui/core";
 
 const styles = theme => ({
 	root: {
@@ -150,6 +150,16 @@ class Home extends Component {
 											</MenuItem>
 										))}
 									</Select>
+								</FormControl>
+
+								<FormControl className={classes.formControl}>
+									<TextField
+										id="releaseDateStart"
+										label="Release Date Start"
+										type="date"
+										defaultValue=""
+										InputLabelProps={{shrink: true}}
+									></TextField>
 								</FormControl>
 							</CardContent>
 						</Card>
