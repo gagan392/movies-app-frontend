@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
-import { Typography, withStyles, Card, CardContent, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
+import { Typography, withStyles, Card, CardContent, FormControl, InputLabel, Select, MenuItem, Input, Button } from '@material-ui/core';
 
 import Header from '../../common/Header/Header';
 import moviesData from "../../common/movieData";
@@ -31,7 +31,10 @@ class BookMovieShow extends Component {
 			location: "",
 			language: "",
 			showDate: "",
-			showTime: ""
+			showTime: "",
+			tickets: 0,
+			availableTickets: 20,
+			unitPrice: 500
 		}
 	}
 
@@ -60,6 +63,10 @@ class BookMovieShow extends Component {
 
 	showTimeChangeHandler = e => {
 		this.setState({ showTime: e.target.value });
+	}
+
+	ticketsChangeHandler = e => {
+		this.setState({ tickets: e.target.value });
 	}
 
 	render() {
@@ -133,6 +140,18 @@ class BookMovieShow extends Component {
 								</Select>
 							</FormControl>
 							<br /><br />
+
+							<FormControl className="formControl">
+								<InputLabel htmlFor="tickets"> Tickets: ({this.state.availableTickets} available)</InputLabel>
+								<Input id="tickets" value={this.state.tickets !== 0 ? this.state.tickets : ""} type="number" onChange={this.ticketsChangeHandler} />
+							</FormControl>
+							<br /><br />
+
+							<Typography>Unit Price: Rs. {this.state.unitPrice}</Typography>
+							<Typography>Total Price: Rs. {this.state.unitPrice * this.state.tickets}</Typography>
+							<br /><br />
+
+							<Button variant="contained" color="primary">BOOK SHOW</Button>
 						</CardContent>
 					</Card>
 				</div>
