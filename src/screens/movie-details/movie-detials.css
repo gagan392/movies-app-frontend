@@ -57,6 +57,10 @@
 	cursor: pointer;
 }
 
+.back > a {
+	text-decoration: none;
+}
+
 .flex-containerDetails {
 	display: flex;
 }
