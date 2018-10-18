@@ -3,7 +3,14 @@ import { GridList, withStyles, GridListTile, GridListTileBar } from "@material-u
 
 import moviesData from "../../../common/movieData";
 
-const styles = () => ({
+const styles = theme => ({
+	root: {
+		display: 'flex',
+		flexWrap: 'wrap',
+		justifyContent: 'space-around',
+		overflow: 'hidden',
+		backgroundColor: theme.palette.background.paper,
+	},
 	upcomingMoviesHeading: {
 		textAlign: 'center',
 		background: '#ff9999',
@@ -31,14 +38,16 @@ class UpcomingMovieGridList extends Component {
 				<div className={classes.upcomingMoviesHeading}>
 					<span>Upcoming Movies</span>
 				</div>
-				<GridList cols={5} className={classes.gridListUpcomingMovies}>
-					{moviesData.map(movieData =>
-						<GridListTile key={movieData.id} className={classes.upcomingMoive}>
-							<img src={movieData.poster_url} alt={movieData.title} />
-							<GridListTileBar title={movieData.title} />
-						</GridListTile>
-					)}
-				</GridList>
+				<div className={classes.root}>
+					<GridList cols={5} className={classes.gridListUpcomingMovies}>
+						{moviesData.map(movieData =>
+							<GridListTile key={movieData.id} className={classes.upcomingMoive}>
+								<img src={movieData.poster_url} alt={movieData.title} />
+								<GridListTileBar title={movieData.title} />
+							</GridListTile>
+						)}
+					</GridList>
+				</div>
 			</>
 		);
 	}
