@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import './Header.css';
 
 import Button from '@material-ui/core/Button';
@@ -156,97 +157,103 @@ class Header extends Component {
 	}
 
 	render() {
+		const { showBookShowButton, movieId } = this.props;
 		return (
 			<div>
 				<div className="app-header">
 					<img src={logo} className="app-logo" alt="Movies App Logo" />
 					<div className="login-button">
-						<Button variant="contained" color="default" onClick={this.openLoginModalHandler}>
-							Login
-                        </Button>
-						<Modal
-							ariaHideApp={false}
-							isOpen={this.state.showModal}
-							contentLabel="Login"
-							onRequestClose={this.closeLoginModalHandler}
-							style={customStyles}
-						>
-							<Tabs className="tabs" value={this.state.value} onChange={this.loginTabChangeHandler}>
-								<Tab label="Login"></Tab>
-								<Tab label="Register"></Tab>
-							</Tabs>
-							{this.state.value === 0 &&
-								<TabContainer>
-									<FormControl required>
-										<InputLabel htmlFor="username"> Username</InputLabel>
-										<Input id="username" type="text" username={this.state.username} onChange={this.usernameChangeHandler} />
-										<FormHelperText className={this.state.usernameRequired}>
-											<span className="textColorRed">required</span>
-										</FormHelperText>
-									</FormControl>
-									<br /><br />
-
-									<FormControl required>
-										<InputLabel htmlFor="loginpassword"> Password</InputLabel>
-										<Input id="loginpassword" type="password" loginpassword={this.state.loginpassword} onChange={this.loginpasswordChangeHandler} />
-										<FormHelperText className={this.state.loginpasswordRequired}>
-											<span className="textColorRed">required</span>
-										</FormHelperText>
-									</FormControl>
-									<br /><br />
-
-									<Button variant="contained" color="primary" onClick={this.loginButtonHanlder}> LOGIN </Button>
-								</TabContainer>
-							}
-							{this.state.value === 1 &&
-								<TabContainer>
-									<FormControl required>
-										<InputLabel htmlFor="firstname">First Name</InputLabel>
-										<Input id="firstname" type="text" firstname={this.state.firstname} onChange={this.firstnameChangeHandler} />
-										<FormHelperText className={this.state.firstnameRequired}>
-											<span className="textColorRed">required</span>
-										</FormHelperText>
-									</FormControl><br /><br />
-
-									<FormControl required>
-										<InputLabel htmlFor="lastname">Last Name</InputLabel>
-										<Input id="lastname" type="text" lastname={this.state.lastname} onChange={this.lastnameChangeHandler} />
-										<FormHelperText className={this.state.lastnameRequired}>
-											<span className="textColorRed">required</span>
-										</FormHelperText>
-									</FormControl><br /><br />
-
-									<FormControl required>
-										<InputLabel htmlFor="email">Email</InputLabel>
-										<Input id="email" type="text" email={this.state.email} onChange={this.emailChangeHandler} />
-										<FormHelperText className={this.state.emailRequired}>
-											<span className="textColorRed">required</span>
-										</FormHelperText>
-									</FormControl><br /><br />
-
-									<FormControl required>
-										<InputLabel htmlFor="registerpassword">Password</InputLabel>
-										<Input id="registerpassword" type="password" registerpassword={this.state.registerpassword} onChange={this.registerpasswordHandler} />
-										<FormHelperText className={this.state.registerpasswordRequired}>
-											<span className="textColorRed">required</span>
-										</FormHelperText>
-									</FormControl><br /><br />
-
-									<FormControl required>
-										<InputLabel htmlFor="contact_no">Contact No.</InputLabel>
-										<Input id="contact_no" type="text" contactno={this.state.contactno} onChange={this.contactnoHandler} />
-										<FormHelperText className={this.state.contactnoRequired}>
-											<span className="textColorRed">required</span>
-										</FormHelperText>
-									</FormControl><br /><br />
-
-									<Button variant="contained" color="primary" onClick={this.registerButtonHandler}> Register </Button>
-								</TabContainer>
-							}
-						</Modal>
+						<Button variant="contained" color="default" onClick={this.openLoginModalHandler}>Login</Button>
 					</div>
+					{showBookShowButton &&
+						<Link id="bookshow-button" to={`/bookshow/${movieId}`}>
+							<div className="bookshow-button">
+								<Button variant="contained" color="primary">Book Show</Button>
+							</div>
+						</Link>
+					}
+					<Modal
+						ariaHideApp={false}
+						isOpen={this.state.showModal}
+						contentLabel="Login"
+						onRequestClose={this.closeLoginModalHandler}
+						style={customStyles}
+					>
+						<Tabs className="tabs" value={this.state.value} onChange={this.loginTabChangeHandler}>
+							<Tab label="Login"></Tab>
+							<Tab label="Register"></Tab>
+						</Tabs>
+						{this.state.value === 0 &&
+							<TabContainer>
+								<FormControl required>
+									<InputLabel htmlFor="username"> Username</InputLabel>
+									<Input id="username" type="text" username={this.state.username} onChange={this.usernameChangeHandler} />
+									<FormHelperText className={this.state.usernameRequired}>
+										<span className="textColorRed">required</span>
+									</FormHelperText>
+								</FormControl>
+								<br /><br />
+
+								<FormControl required>
+									<InputLabel htmlFor="loginpassword"> Password</InputLabel>
+									<Input id="loginpassword" type="password" loginpassword={this.state.loginpassword} onChange={this.loginpasswordChangeHandler} />
+									<FormHelperText className={this.state.loginpasswordRequired}>
+										<span className="textColorRed">required</span>
+									</FormHelperText>
+								</FormControl>
+								<br /><br />
+
+								<Button variant="contained" color="primary" onClick={this.loginButtonHanlder}> LOGIN </Button>
+							</TabContainer>
+						}
+						{this.state.value === 1 &&
+							<TabContainer>
+								<FormControl required>
+									<InputLabel htmlFor="firstname">First Name</InputLabel>
+									<Input id="firstname" type="text" firstname={this.state.firstname} onChange={this.firstnameChangeHandler} />
+									<FormHelperText className={this.state.firstnameRequired}>
+										<span className="textColorRed">required</span>
+									</FormHelperText>
+								</FormControl><br /><br />
+
+								<FormControl required>
+									<InputLabel htmlFor="lastname">Last Name</InputLabel>
+									<Input id="lastname" type="text" lastname={this.state.lastname} onChange={this.lastnameChangeHandler} />
+									<FormHelperText className={this.state.lastnameRequired}>
+										<span className="textColorRed">required</span>
+									</FormHelperText>
+								</FormControl><br /><br />
+
+								<FormControl required>
+									<InputLabel htmlFor="email">Email</InputLabel>
+									<Input id="email" type="text" email={this.state.email} onChange={this.emailChangeHandler} />
+									<FormHelperText className={this.state.emailRequired}>
+										<span className="textColorRed">required</span>
+									</FormHelperText>
+								</FormControl><br /><br />
+
+								<FormControl required>
+									<InputLabel htmlFor="registerpassword">Password</InputLabel>
+									<Input id="registerpassword" type="password" registerpassword={this.state.registerpassword} onChange={this.registerpasswordHandler} />
+									<FormHelperText className={this.state.registerpasswordRequired}>
+										<span className="textColorRed">required</span>
+									</FormHelperText>
+								</FormControl><br /><br />
+
+								<FormControl required>
+									<InputLabel htmlFor="contact_no">Contact No.</InputLabel>
+									<Input id="contact_no" type="text" contactno={this.state.contactno} onChange={this.contactnoHandler} />
+									<FormHelperText className={this.state.contactnoRequired}>
+										<span className="textColorRed">required</span>
+									</FormHelperText>
+								</FormControl><br /><br />
+
+								<Button variant="contained" color="primary" onClick={this.registerButtonHandler}> Register </Button>
+							</TabContainer>
+						}
+					</Modal>
 				</div>
-			</div >
+			</div>
 		);
 	}
 }

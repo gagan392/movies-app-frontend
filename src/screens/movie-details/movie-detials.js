@@ -14,7 +14,7 @@ import "./movie-detials.css";
 const styles = theme => ({
 	backButton: {
 		'& svg': {
-			height: '1rem'
+			fontSize: '1.5rem'
 		}
 	}
 });
@@ -66,7 +66,7 @@ class MovieDetails extends Component {
 
 	_onReady(event) {
 		// access to player in all event handlers via event.target
-		// event.target.pauseVideo();
+		event.target.pauseVideo();
 	}
 
 	artistClickHandler = (url) => {
@@ -103,13 +103,12 @@ class MovieDetails extends Component {
 
 		return (
 			<div className="detials">
-				<Header />
+				<Header showBookShowButton={true} movieId={movie.id} />
 				<div className="back">
 					<Link id={`BackButton`} to="/" className={classes.backButton}>
 						<ChevronLeft />
 						<Typography style={{ display: "inline" }} variant="subheading" component="span">Back to home</Typography>
 					</Link>
-
 				</div>
 				<div className="flex-containerDetails">
 					<div className="leftDetails">

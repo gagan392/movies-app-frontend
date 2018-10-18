@@ -8,6 +8,7 @@ import UpcomingMovieGridList from "./upcoming-movie-grid-list/upcoming-movie-gri
 import ReleasedMovieGridList from "./released-movie-grid-list/released-movie-grid-list";
 import MovieFilters from "./movie-filters/movie-filters";
 import MovieDetails from "../movie-details/movie-detials";
+import BookMovieShow from "../book-movie-show/book-movie-show";
 
 const styles = theme => ({
 	root: {
@@ -75,6 +76,9 @@ class Home extends Component {
 					/>
 					<Route exact path="/details/:movieId" render={routeData => (
 						<MovieDetails routeData={routeData.match}/>
+					)}/>
+					<Route exact path="/bookshow/:movieId" render={routeData => (
+						<BookMovieShow routeData={routeData.match}/>
 					)}/>
 				</>
 			</Router>
