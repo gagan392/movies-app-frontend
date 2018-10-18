@@ -3,6 +3,7 @@ import './Home.css';
 import Header from '../../common/Header/Header';
 import { withStyles } from "@material-ui/core/styles";
 import moviesData from "../../common/movieData";
+import genres from "./../../common/genres";
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
@@ -12,6 +13,9 @@ import FormControl from '@material-ui/core/FormControl';
 import Typography from '@material-ui/core/Typography';
 import Input from "@material-ui/core/Input";
 import InputLabel from '@material-ui/core/InputLabel';
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
+import { Checkbox, ListItemText } from "@material-ui/core";
 
 const styles = theme => ({
 	root: {
@@ -48,14 +52,20 @@ class Home extends Component {
 	constructor() {
 		super();
 		this.state = {
-			movieName: ""
+			movieName: "",
+			genres: []
 		}
 	}
 	movieNameChangeHandler = e => {
 		this.setState({
 			movieName: e.target.value
 		});
-		console.log(" movie name ", this.state.movieName);
+	}
+
+	genreChangeHandler = e => {
+		this.setState({
+			genres: e.target.value
+		});
 	}
 
 	render() {
@@ -96,6 +106,23 @@ class Home extends Component {
 								<FormControl className={classes.formControl}>
 									<InputLabel htmlFor="movieName"> Movie Name:</InputLabel>
 									<Input id="movieName" onChange={this.movieNameChangeHandler} />
+								</FormControl>
+								<FormControl className={classes.formControl}>
+									<InputLabel htmlFor="genres"> Genres:</InputLabel>
+									<Select multiple
+										value={this.state.genres}
+										renderValue={selected => selected.join(',')}
+										input={<Input id="genres" />}
+										onChange={this.genreChangeHandler} >
+										<MenuItem value={0}>None</MenuItem>
+										{genres.map(genre => (
+											<MenuItem key={genre.id} value={genre.name}>
+												<Checkbox checked={this.state.genres.indexOf(genre.name) > -1} />
+												<ListItemText primary={genre.name} />
+											</MenuItem>
+										))}
+									</Select>
+
 								</FormControl>
 							</CardContent>
 						</Card>
