@@ -15,3 +15,43 @@
 ::-webkit-scrollbar-thumb:hover {
   background: grey;
 }
+
+.flex-container {
+	display: flex;
+}
+
+.flex-container>div {
+    margin: 1rem;
+}
+
+.left {
+	width: 75%;
+}
+
+.movie-poster {
+    height: 100%;
+    width: auto;
+}
+
+.right {
+	width: 25%;
+	padding-top: 1rem;
+}
+.released-movie-grid-item {
+	margin: 1rem;
+}
+
+@media (max-width: 992px) {
+    .flex-container {
+        flex-direction: column;
+    }
+    .left {
+        width: 100%;
+    }
+    .right {
+        width: 90%;
+    }
+    .released-movie-grid-item {
+        margin: 8px;
+	}
+}
