@@ -28,7 +28,10 @@ class BookMovieShow extends Component {
 		super();
 		this.state = {
 			movie: {},
-			location: {}
+			location: "",
+			language: "",
+			showDate: "",
+			showTime: ""
 		}
 	}
 
@@ -45,6 +48,18 @@ class BookMovieShow extends Component {
 
 	locationChangeHandler = e => {
 		this.setState({ location: e.target.value });
+	}
+
+	languageChangeHandler = e => {
+		this.setState({ language: e.target.value });
+	}
+
+	showDateChangeHandler = e => {
+		this.setState({ showDate: e.target.value });
+	}
+
+	showTimeChangeHandler = e => {
+		this.setState({ showTime: e.target.value });
 	}
 
 	render() {
@@ -75,6 +90,49 @@ class BookMovieShow extends Component {
 									))}
 								</Select>
 							</FormControl>
+							<br /><br />
+
+							<FormControl required className="formControl" >
+								<InputLabel htmlFor="language">Choose Language: </InputLabel>
+								<Select
+									id="language"
+									value={this.state.language}
+									onChange={this.languageChangeHandler}
+								>
+									{language.map(lng => (
+										<MenuItem key={"language" + lng.id} value={lng.language}>{lng.language}</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+							<br /><br />
+
+							<FormControl required className="formControl" >
+								<InputLabel htmlFor="showDate">Choose Show Date: </InputLabel>
+								<Select
+									id="showDate"
+									value={this.state.showDate}
+									onChange={this.showDateChangeHandler}
+								>
+									{showDate.map(sd => (
+										<MenuItem key={"showDate" + sd.id} value={sd.showDate}>{sd.showDate}</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+							<br /><br />
+
+							<FormControl required className="formControl" >
+								<InputLabel htmlFor="showTime">Choose Show Time: </InputLabel>
+								<Select
+									id="showTime"
+									value={this.state.showTime}
+									onChange={this.showTimeChangeHandler}
+								>
+									{showTime.map(st => (
+										<MenuItem key={"showTime" + st.id} value={st.showTime}>{st.showTime}</MenuItem>
+									))}
+								</Select>
+							</FormControl>
+							<br /><br />
 						</CardContent>
 					</Card>
 				</div>
