@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
-import { Typography, withStyles, Card, CardContent, FormControl, InputLabel, Select, MenuItem, Input, Button } from '@material-ui/core';
+import { Typography, withStyles, Card, CardContent, FormControl, InputLabel, Select, MenuItem, Input, Button, FormHelperText } from '@material-ui/core';
 
 import Header from '../../common/Header/Header';
 import moviesData from "../../common/movieData";
@@ -34,7 +34,12 @@ class BookMovieShow extends Component {
 			showTime: "",
 			tickets: 0,
 			availableTickets: 20,
-			unitPrice: 500
+			unitPrice: 500,
+			locationRequired: "dispNone",
+			languageRequired: "dispNone",
+			showDateRequired: "dispNone",
+			showTimeRequired: "dispNone",
+			ticketsRequired: "dispNone"
 		}
 	}
 
@@ -69,6 +74,18 @@ class BookMovieShow extends Component {
 		this.setState({ tickets: e.target.value });
 	}
 
+	bookShowButtonHandler =() => {
+		this.setState(prevState => {
+			return ({
+				locationRequired: prevState.location === "" ? "dispBlock" : "dispNone",
+				languageRequired: prevState.language === "" ? "dispBlock" : "dispNone",
+				showDateRequired: prevState.showDate === "" ? "dispBlock" : "dispNone",
+				showTimeRequired: prevState.showTime === "" ? "dispBlock" : "dispNone",
+				ticketsRequired: prevState.tickets <= 0 ? "dispBlock" : "dispNone"
+			})
+		});
+	}
+
 	render() {
 		const { routeData, classes } = this.props;
 		return (
@@ -96,6 +113,9 @@ class BookMovieShow extends Component {
 										<MenuItem key={"location" + loc.id} value={loc.location}>{loc.location}</MenuItem>
 									))}
 								</Select>
+								<FormHelperText className={this.state.locationRequired}>
+									<span className="textColorRed">required</span>
+								</FormHelperText>
 							</FormControl>
 							<br /><br />
 
@@ -110,6 +130,9 @@ class BookMovieShow extends Component {
 										<MenuItem key={"language" + lng.id} value={lng.language}>{lng.language}</MenuItem>
 									))}
 								</Select>
+								<FormHelperText className={this.state.languageRequired}>
+									<span className="textColorRed">required</span>
+								</FormHelperText>
 							</FormControl>
 							<br /><br />
 
@@ -124,6 +147,9 @@ class BookMovieShow extends Component {
 										<MenuItem key={"showDate" + sd.id} value={sd.showDate}>{sd.showDate}</MenuItem>
 									))}
 								</Select>
+								<FormHelperText className={this.state.showDateRequired}>
+									<span className="textColorRed">required</span>
+								</FormHelperText>
 							</FormControl>
 							<br /><br />
 
@@ -138,12 +164,18 @@ class BookMovieShow extends Component {
 										<MenuItem key={"showTime" + st.id} value={st.showTime}>{st.showTime}</MenuItem>
 									))}
 								</Select>
+								<FormHelperText className={this.state.showTimeRequired}>
+									<span className="textColorRed">required</span>
+								</FormHelperText>
 							</FormControl>
 							<br /><br />
 
 							<FormControl className="formControl">
 								<InputLabel htmlFor="tickets"> Tickets: ({this.state.availableTickets} available)</InputLabel>
 								<Input id="tickets" value={this.state.tickets !== 0 ? this.state.tickets : ""} type="number" onChange={this.ticketsChangeHandler} />
+								<FormHelperText className={this.state.ticketsRequired}>
+									<span className="textColorRed">required</span>
+								</FormHelperText>
 							</FormControl>
 							<br /><br />
 
@@ -151,7 +183,7 @@ class BookMovieShow extends Component {
 							<Typography>Total Price: Rs. {this.state.unitPrice * this.state.tickets}</Typography>
 							<br /><br />
 
-							<Button variant="contained" color="primary">BOOK SHOW</Button>
+							<Button variant="contained" color="primary" onClick={this.bookShowButtonHandler}>BOOK SHOW</Button>
 						</CardContent>
 					</Card>
 				</div>
