@@ -4,6 +4,7 @@ import Header from '../../common/Header/Header';
 import { withStyles } from "@material-ui/core/styles";
 import moviesData from "../../common/movieData";
 import genres from "./../../common/genres";
+import artists from "./../../common/artists";
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
@@ -53,7 +54,8 @@ class Home extends Component {
 		super();
 		this.state = {
 			movieName: "",
-			genres: []
+			genres: [],
+			artists: []
 		}
 	}
 	movieNameChangeHandler = e => {
@@ -65,6 +67,12 @@ class Home extends Component {
 	genreChangeHandler = e => {
 		this.setState({
 			genres: e.target.value
+		});
+	}
+
+	artistChangeHandler = e => {
+		this.setState({
+			artists: e.target.value
 		});
 	}
 
@@ -107,6 +115,7 @@ class Home extends Component {
 									<InputLabel htmlFor="movieName"> Movie Name:</InputLabel>
 									<Input id="movieName" onChange={this.movieNameChangeHandler} />
 								</FormControl>
+
 								<FormControl className={classes.formControl}>
 									<InputLabel htmlFor="genres"> Genres:</InputLabel>
 									<Select multiple
@@ -122,7 +131,25 @@ class Home extends Component {
 											</MenuItem>
 										))}
 									</Select>
+								</FormControl>
 
+								<FormControl className={classes.formControl}>
+									<InputLabel htmlFor="artists">Artists: </InputLabel>
+									<Select
+										multiple
+										input={<Input id="artists" />}
+										renderValue={selected => selected.join(',')}
+										value={this.state.artists}
+										onChange={this.artistChangeHandler}
+									>
+										<MenuItem value={0}>None</MenuItem>
+										{artists.map(artist => (
+											<MenuItem key={artist.id} value={artist.first_name + " " + artist.last_name}>
+												<Checkbox checked={this.state.artists.indexOf(artist.first_name + " " + artist.last_name) > -1} />
+												<ListItemText primary={artist.first_name + " " + artist.last_name} />
+											</MenuItem>
+										))}
+									</Select>
 								</FormControl>
 							</CardContent>
 						</Card>
