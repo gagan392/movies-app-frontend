@@ -6,6 +6,11 @@ function ApiClient() {}
 ApiClient.prototype.getMovies = (filters) => {
 	return axios.get(`${apiBaseURL}/movies`, {
 			params: filters
+		}, {
+			headers: {
+				"Accept": "application/json",
+				"content-type": "application/json"
+			}
 		})
 		.then(response => {
 			return response && response.data;
@@ -15,7 +20,12 @@ ApiClient.prototype.getMovies = (filters) => {
 }
 
 ApiClient.prototype.getMovieById = (id) => {
-	return axios.get(`${apiBaseURL}/movies/${id}`)
+	return axios.get(`${apiBaseURL}/movies/${id}`, {}, {
+			headers: {
+				"Accept": "application/json",
+				"content-type": "application/json"
+			}
+		})
 		.then(response => {
 			return response && response.data;
 		}).catch((error) => {
