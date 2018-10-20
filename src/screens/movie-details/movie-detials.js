@@ -101,7 +101,7 @@ class MovieDetails extends Component {
 
 		return (
 			movie && <div className="detials">
-				<Header showBookShowButton={true} movieId={movie.id} />
+				<Header apiClient={this.props.apiClient} showBookShowButton={true} movieId={movie.id} />
 				<div className="back">
 					<Link id={`BackButton`} to="/" className={classes.backButton}>
 						<ChevronLeft />
