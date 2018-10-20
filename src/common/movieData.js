@@ -47,7 +47,7 @@ let moviesData = [
         ],
         "duration": 152,
         "poster_url": "https://upload.wikimedia.org/wikipedia/en/8/8a/Dark_Knight.jpg",
-        "trailer_url": "https://www.youtube.com/watch?v=_PZpmTj1Q8Q",
+        "trailer_url": "https://www.youtube.com/watch?v=yQ5U8suTUw0",
         "wiki_url": "https://en.wikipedia.org/wiki/The_Dark_Knight_(film)",
         "release_date": "2008-07-18T00:00:00+05:30",
         "censor_board_rating": "PG-13",
@@ -174,7 +174,7 @@ let moviesData = [
                 "last_name": "Rao",
                 "role_type": "ACTOR",
                 "profile_description": "Rajkummar Rao, also known as Rajkumar Yadav, is an Indian actor. He has established a career in Hindi cinema and is the recipient of several awards, including a National Film Award, three Filmfare Awards, and an Asia Pacific Screen Award. He is cited in the media as one of the most talented actors of his generation.",
-                "profile_url": "https://en.wikipedia.org/wiki/Rajkummar_Rao#/media/File:Rajkummar_Rao_World_Premiere_Newton_Zoopalast_Berlinale_2017_02.jpg",
+                "profile_url": "https://upload.wikimedia.org/wikipedia/commons/c/cf/Rajkummar_Rao_World_Premiere_Newton_Zoopalast_Berlinale_2017_02.jpg",
                 "wiki_url": "https://en.wikipedia.org/wiki/Rajkummar_Rao"
             },
             {
