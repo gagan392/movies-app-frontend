@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { withRouter } from "react-router";
 import './Header.css';
 
 import Button from '@material-ui/core/Button';
@@ -81,6 +81,10 @@ class Header extends Component {
 		super(props);
 		this.state = initObj;
 		this.apiClient = this.props.apiClient;
+	}
+
+	componentDidMount() {
+		this.setState({ loggedIn: sessionStorage.getItem("access-token") !== undefined && sessionStorage.getItem("uuid") !== undefined });
 	}
 
 	openLoginModalHandler = () => {
@@ -238,6 +242,14 @@ class Header extends Component {
 		this.setState({ showSnackBar: false });
 	}
 
+	bookShowClickHanlder = () => {
+		if (this.state.loggedIn === true) {
+			this.props.history.push(`/bookshow/${this.props.match.params.id}`);
+		} else {
+			this.openLoginModalHandler();
+		}
+	}
+
 	render() {
 		const { classes, showBookShowButton, movieId } = this.props;
 
@@ -252,11 +264,9 @@ class Header extends Component {
 							<Button variant="contained" color="default" onClick={this.logoutClickHandler}>Logout</Button>}
 					</div>
 					{showBookShowButton &&
-						<Link id="bookshow-button" to={`/bookshow/${movieId}`}>
-							<div className="bookshow-button">
-								<Button variant="contained" color="primary">Book Show</Button>
-							</div>
-						</Link>
+						<div className="bookshow-button">
+							<Button variant="contained" color="primary" onClick={this.bookShowClickHanlder}>Book Show</Button>
+						</div>
 					}
 					<Modal
 						ariaHideApp={false}
@@ -353,4 +363,4 @@ class Header extends Component {
 	}
 }
 
-export default withStyles(styles)(Header);
+export default withRouter(withStyles(styles)(Header));
