@@ -63,7 +63,8 @@ const initObj = {
 	registerpasswordRequired: "dispNone",
 	contactnoRequired: "dispNone",
 	registerationSuccess: false,
-	userExist: false
+	userExist: false,
+	loggedIn: sessionStorage.getItem("access-token") == null ? false : true
 }
 
 class Header extends Component {
@@ -71,6 +72,7 @@ class Header extends Component {
 	constructor(props) {
 		super(props);
 		this.state = initObj;
+		this.apiClient = this.props.apiClient;
 	}
 
 	openLoginModalHandler = () => {
@@ -83,16 +85,19 @@ class Header extends Component {
 
 	loginTabChangeHandler = (e, value) => {
 		this.setState({ ...initObj, showModal: true, value: value });
-		console.log(" tab changed ", this.state);
 	}
 
-	loginButtonHanlder = () => {
-		this.setState((prevState) => {
-			return ({
-				usernameRequired: prevState.username === "" ? "dispBlock" : "dispNone",
-				loginpasswordRequired: prevState.loginpassword === "" ? "dispBlock" : "dispNone"
-			})
-		});
+	loginButtonHanlder = async () => {
+		const currState = this.state;
+		currState.usernameRequired = this.state.username === "" ? "dispBlock" : "dispNone";
+		currState.loginpasswordRequired = this.state.loginpassword === "" ? "dispBlock" : "dispNone";
+		this.setState(currState);
+		if (currState.usernameRequired === "dispBlock" || currState.loginpasswordRequired === "dispBlock") return;
+
+		const res = await this.props.apiClient.login(currState.username, currState.loginpassword);
+		sessionStorage.setItem("access-token", res.headers["access-token"]);
+		sessionStorage.setItem("uuid", res.data.id);
+		this.setState({ ...currState, loggedIn: true, showModal: false });
 	}
 
 	usernameChangeHandler = e => {
@@ -168,7 +173,6 @@ class Header extends Component {
 	}
 
 	render() {
-		console.log(" header render ");
 		const { classes, showBookShowButton, movieId } = this.props;
 		return (
 			<div>

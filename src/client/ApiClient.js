@@ -37,4 +37,19 @@ ApiClient.prototype.signup = (formData) => {
 		});
 }
 
+ApiClient.prototype.login = (username, password) => {
+	return axios.post(`${apiBaseURL}/auth/login`, {}, {
+			headers: {
+				"Accept": "application/json",
+				"Authorization": "Basic " + window.btoa(username + ":" + password),
+				"content-type": "application/json"
+			}
+		})
+		.then(response => {
+			return response;
+		}).catch((error) => {
+			throw error;
+		});
+}
+
 export default ApiClient;
