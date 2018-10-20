@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { withRouter } from "react-router";
 
 import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import { Typography, withStyles, Card, CardContent, FormControl, InputLabel, Select, MenuItem, Input, Button, FormHelperText } from '@material-ui/core';
@@ -44,14 +45,17 @@ class BookMovieShow extends Component {
 	}
 
 	componentWillMount() {
-		const currState = this.state;
+		let currState = this.state;
+		const { routeData } = this.props;
 		currState.movie = moviesData.find(movie => {
-			return movie.id === this.props.routeData.params.movieId
+			return movie.id === routeData.match.params.movieId
 		});
+		if (routeData.location.state) {
+			const summary = routeData.location.state;
+			currState = summary;
+		}
 
-		this.setState({ currState });
-		console.log(" current movie ", this.state);
-
+		this.setState(currState);
 	}
 
 	locationChangeHandler = e => {
@@ -74,16 +78,23 @@ class BookMovieShow extends Component {
 		this.setState({ tickets: e.target.value });
 	}
 
-	bookShowButtonHandler =() => {
-		this.setState(prevState => {
-			return ({
-				locationRequired: prevState.location === "" ? "dispBlock" : "dispNone",
-				languageRequired: prevState.language === "" ? "dispBlock" : "dispNone",
-				showDateRequired: prevState.showDate === "" ? "dispBlock" : "dispNone",
-				showTimeRequired: prevState.showTime === "" ? "dispBlock" : "dispNone",
-				ticketsRequired: prevState.tickets <= 0 ? "dispBlock" : "dispNone"
-			})
-		});
+	bookShowButtonHandler = () => {
+		const currState = this.state;
+		currState.locationRequired = currState.location === "" ? "dispBlock" : "dispNone";
+		currState.languageRequired = currState.language === "" ? "dispBlock" : "dispNone";
+		currState.showDateRequired = currState.showDate === "" ? "dispBlock" : "dispNone";
+		currState.showTimeRequired = currState.showTime === "" ? "dispBlock" : "dispNone";
+		currState.ticketsRequired = currState.tickets <= 0 ? "dispBlock" : "dispNone";
+
+		this.setState(currState);
+		const navigateToBookingConfiramtionPage = (currState.locationRequired === "dispNone" && currState.languageRequired === "dispNone" && currState.showDateRequired === "dispNone" && currState.showTimeRequired === "dispNone" && currState.ticketsRequired === "dispNone");
+
+		if (navigateToBookingConfiramtionPage) {
+			this.props.history.push({
+				pathname: `/confirm/${this.state.movie.id}`,
+				state: this.state
+			});
+		}
 	}
 
 	render() {
@@ -93,7 +104,7 @@ class BookMovieShow extends Component {
 				<Header />
 				<div className="bookShow">
 					<div className="back">
-						<Link id={`BackButton`} to={`/details/${routeData.params.movieId}`} className={classes.backButton}>
+						<Link id={`BackButton`} to={`/details/${routeData.match.params.movieId}`} className={classes.backButton}>
 							<ChevronLeft />
 							<Typography style={{ display: "inline" }} variant="subheading" component="span">Back to Movie Details</Typography>
 						</Link>
@@ -192,4 +203,4 @@ class BookMovieShow extends Component {
 	}
 }
 
-export default withStyles(styles)(BookMovieShow);
+export default withRouter(withStyles(styles)(BookMovieShow));

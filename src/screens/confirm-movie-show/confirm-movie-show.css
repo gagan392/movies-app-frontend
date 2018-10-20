@@ -1,0 +1,28 @@
+.back {
+	margin-top: 16px;
+	cursor: pointer;
+}
+
+.confirmShow {
+	text-align: center;
+	margin-top: 2rem;
+}
+
+.cardStyle {
+	width: 380px;
+	padding: 32px 32px 32px 32px;
+	margin: auto;
+	text-align: left;
+}
+
+.container {
+	display: flex;
+}
+
+.container-left {
+	width: 40%
+}
+
+.formControl {
+	width: 240px;
+}
