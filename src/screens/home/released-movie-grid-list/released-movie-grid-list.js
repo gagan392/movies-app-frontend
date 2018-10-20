@@ -11,14 +11,8 @@ const styles = () => ({
 
 class ReleasedMovieGridList extends Component {
 
-	constructor() {
-		super();
-		console.log(' ReleasedMovieGridList constructor', this.props);
-	}
-
 	render() {
 		const { classes, releasedMovies } = this.props;
-		console.log(" ReleasedMovieGridList render ", releasedMovies);
 		return (
 			releasedMovies.length > 0 && <GridList cellHeight={350} cols={4} className={classes.gridListReleasedMovies}>
 				{releasedMovies.map(releasedMovie =>

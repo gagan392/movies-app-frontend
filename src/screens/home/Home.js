@@ -50,8 +50,6 @@ class Home extends Component {
 			releasedMovies: releasedMovies.movies,
 			upcomingMovies: upcomingMovies.movies
 		});
-		console.log(" releasedMovies ", releasedMovies);
-		console.log(" upcomingMovies ", upcomingMovies);
 
 	}
 	movieNameChangeHandler = e => {
