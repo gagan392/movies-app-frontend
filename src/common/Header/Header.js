@@ -221,11 +221,9 @@ class Header extends Component {
 				snackBarVariant: "info"
 			}
 			this.setState(currState);
-			console.log(" logout res -->", res);
 			sessionStorage.removeItem("access-token");
 			sessionStorage.removeItem("uuid");
 		} catch (error) {
-			console.log(" logout error -->", error.message);
 			const currState = {
 				showSnackBar: true,
 				snackBarMessage: "Logout failed!",
