@@ -91,7 +91,7 @@ class BookMovieShow extends Component {
 
 		if (navigateToBookingConfiramtionPage) {
 			this.props.history.push({
-				pathname: `/confirm/${this.state.movie.id}`,
+				pathname: `/confirm/${this.props.match.params.id}`,
 				state: this.state
 			});
 		}
