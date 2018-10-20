@@ -211,16 +211,30 @@ class Header extends Component {
 		})
 	}
 
-	logoutClickHandler = () => {
-		const currState = {
-			loggedIn: false,
-			showSnackBar: true,
-			snackBarMessage: "Logged out successfully!",
-			snackBarVariant: "info"
+	logoutClickHandler = async () => {
+		const { username, loginpassword } = this.state;
+		try {
+			const res = await this.props.apiClient.logout(username, loginpassword);
+			const currState = {
+				loggedIn: false,
+				showSnackBar: true,
+				snackBarMessage: "Logged out successfully!",
+				snackBarVariant: "info"
+			}
+			this.setState(currState);
+			console.log(" logout res -->", res);
+			sessionStorage.removeItem("access-token");
+			sessionStorage.removeItem("uuid");
+		} catch (error) {
+			console.log(" logout error -->", error.message);
+			const currState = {
+				showSnackBar: true,
+				snackBarMessage: "Logout failed!",
+				snackBarVariant: "error"
+			}
+			this.setState(currState);
 		}
-		this.setState(currState);
-		// sessionStorage.removeItem("access-token");
-		// sessionStorage.removeItem("uuid");
+
 	}
 
 	snackBarCloseHandler = () => {
@@ -229,7 +243,6 @@ class Header extends Component {
 
 	render() {
 		const { classes, showBookShowButton, movieId } = this.props;
-		console.log(" header render ", this.state);
 
 		return (
 			<div>

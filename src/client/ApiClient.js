@@ -52,4 +52,18 @@ ApiClient.prototype.login = (username, password) => {
 		});
 }
 
+ApiClient.prototype.logout = (username, password) => {
+	return axios.post(`${apiBaseURL}/auth/logout`, {}, {
+			headers: {
+				"Accept": "application/json",
+				"Authorization": "Bearer " + sessionStorage.getItem("access-token"),
+				"content-type": "application/json"
+			}
+		})
+		.then(response => {
+			return response;
+		}).catch((error) => {
+			throw error;
+		});
+}
 export default ApiClient;
