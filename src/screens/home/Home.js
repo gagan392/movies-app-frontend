@@ -25,7 +25,9 @@ class Home extends Component {
 			genresList: [],
 			artistsList: [],
 			releasedMovies: [],
-			upcomingMovies: []
+			upcomingMovies: [],
+			releaseStartDate: "",
+			releaseEndDate: ""
 		}
 	}
 
@@ -60,6 +62,7 @@ class Home extends Component {
 			this.getAllGenres(),
 			this.getAllArtists()
 		]);
+		console.log(" genres, artisits, ", genresList, artistsList);
 
 		this.setState({
 			releasedMovies: releasedMovies.movies,
@@ -69,7 +72,6 @@ class Home extends Component {
 		});
 
 	}
-
 	movieNameChangeHandler = e => {
 		this.setState({
 			movieName: e.target.value
@@ -88,6 +90,37 @@ class Home extends Component {
 		});
 	}
 
+	releaseStartDateChangeHandler = e => {
+		this.setState({
+			releaseStartDate: e.target.value
+		});
+	}
+
+	releaseEndDateChangeHandler = e => {
+		this.setState({
+			releaseEndDate: e.target.value
+		});
+	}
+
+	getFilteredReleasedMovies() {
+		const { apiClient } = this.props;
+		return apiClient.getMovies({
+			status: "RELEASED",
+			title: this.state.movieName,
+			start_date: this.state.releaseStartDate,
+			end_date: this.state.releaseEndDate,
+			genre: this.state.genres.toString(),
+			artists: this.state.artists.toString(),
+			sort: ['RELEASE_DATE', 'RATING'][0]
+		});
+	}
+
+	movieFiltersHandler = async (filterData) => {
+		const releasedMovies = await this.getFilteredReleasedMovies();
+		console.log(" filtered releasedMovies ", releasedMovies);
+		this.setState({ releasedMovies: releasedMovies.movies });
+	}
+
 	render() {
 
 		const movieFiltersProps = {
@@ -98,6 +131,9 @@ class Home extends Component {
 			genreChangeHandler: this.genreChangeHandler,
 			artistChangeHandler: this.artistChangeHandler,
 			movieNameChangeHandler: this.movieNameChangeHandler,
+			releaseStartDateChangeHandler: this.releaseStartDateChangeHandler,
+			releaseEndDateChangeHandler: this.releaseEndDateChangeHandler,
+			movieFiltersHandler: this.movieFiltersHandler
 		}
 
 		const { upcomingMovies, releasedMovies } = this.state;

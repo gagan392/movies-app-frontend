@@ -14,7 +14,7 @@ const styles = theme => ({
 
 class MovieFilters extends Component {
 	render() {
-		const { classes, genresList, artistsList, genresSelected, artistsSelected, genreChangeHandler, artistChangeHandler, movieNameChangeHandler } = this.props;
+		const { classes, genresList, artistsList, genresSelected, movieNameChangeHandler, artistsSelected, genreChangeHandler, artistChangeHandler, releaseStartDateChangeHandler, releaseEndDateChangeHandler, movieFiltersHandler, } = this.props;
 		return (
 			<Card>
 				<CardContent>
@@ -71,6 +71,7 @@ class MovieFilters extends Component {
 							type="date"
 							defaultValue=""
 							InputLabelProps={{ shrink: true }}
+							onChange={releaseStartDateChangeHandler}
 						></TextField>
 					</FormControl>
 
@@ -81,11 +82,12 @@ class MovieFilters extends Component {
 							type="date"
 							defaultValue=""
 							InputLabelProps={{ shrink: true }}
+							onChange={releaseEndDateChangeHandler}
 						></TextField>
 					</FormControl>
 
 					<FormControl className={classes.formControl}>
-						<Button variant="contained" color="primary"> Apply </Button>
+						<Button variant="contained" color="primary" onClick={movieFiltersHandler}> Apply </Button>
 					</FormControl>
 				</CardContent>
 			</Card>
