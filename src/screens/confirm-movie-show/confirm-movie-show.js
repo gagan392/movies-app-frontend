@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { withRouter } from "react-router";
 
-import { withStyles, Button, Snackbar, SnackbarContent, IconButton, Card, CardContent, Typography, InputLabel, FormControl, Select, MenuItem } from '@material-ui/core';
-import { green } from "@material-ui/core/colors";
+import { withStyles, Button, Card, CardContent, Typography, InputLabel, FormControl, Select, MenuItem } from '@material-ui/core';
 
-import { Close as CloseIcon, CheckCircle as CheckCircleIcon, ChevronLeft } from "@material-ui/icons";
+import { ChevronLeft } from "@material-ui/icons";
 
 import Header from '../../common/Header/Header';
+import CustomSnackBar from "../../common/SnackBar/SnackBar";
 import coupons from "../../common/coupons";
 import './confirm-movie-show.css'
 
@@ -57,10 +55,10 @@ class ConfirmMovieShow extends Component {
 		this.setState({ open: true });
 	};
 
-	handleClose = () => {
+	snackBarCloseHandler = () => {
 		this.setState({ open: false });
 		this.props.history.push({
-			pathname: `/bookshow/${this.state.summary.movie.id}`,
+			pathname: `/bookshow/${this.props.match.params.id}`,
 			state: this.state.summary
 		});
 	};
@@ -80,14 +78,14 @@ class ConfirmMovieShow extends Component {
 	}
 
 	render() {
-		const { classes } = this.props;
+		const { classes, match } = this.props;
 		const { vertical, horizontal, open, summary } = this.state;
 		return (
 			<>
 				<Header />
 				<div className="back">
 					<Link id={`BackButton`} to={{
-						pathname: `/bookshow/${summary.movie.id}`,
+						pathname: `/bookshow/${match.params.id}`,
 						state: summary
 					}} className={classes.backButton}>
 						<ChevronLeft />
@@ -197,91 +195,18 @@ class ConfirmMovieShow extends Component {
 						</CardContent>
 					</Card>
 				</div>
-				<Snackbar
-					anchorOrigin={{ vertical, horizontal }}
+				<CustomSnackBar
+					vertical={vertical}
+					horizontal={horizontal}
 					open={open}
-					onClose={this.handleClose}
-					className={classes.anchorOriginTopCenter}
-				// autoHideDuration={6000}
-				>
-					<MySnackbarContentWrapper
-						onClose={this.handleClose}
-						variant="success"
-						message="Booking Confirmed!"
-					/>
-				</Snackbar>
+					onClose={this.snackBarCloseHandler}
+					classes={{anchorOriginTopCenter: classes.anchorOriginTopCenter}}
+					variant="success"
+					message="Booking Confirmed!"
+				/>
 			</>
 		);
 	}
 }
-
-const variantIcon = {
-	success: CheckCircleIcon
-};
-
-const styles1 = theme => ({
-	success: {
-		backgroundColor: "black",
-		color: green[600]
-	},
-	icon: {
-		fontSize: '1.5rem',
-	},
-	closeicon: {
-		color: "white"
-	},
-	iconVariant: {
-		opacity: 1,
-		marginRight: theme.spacing.unit * 1.5,
-	},
-	message: {
-		display: 'flex',
-		alignItems: 'center',
-	},
-});
-
-const MySnackbarContentWrapper = withStyles(styles1)(MySnackbarContent);
-
-function MySnackbarContent(props) {
-	const { classes, className, message, onClose, variant, ...other } = props;
-	const Icon = variantIcon[variant];
-
-	return (
-		<SnackbarContent
-			className={classNames(classes[variant], className)}
-			aria-describedby="client-snackbar"
-			message={
-				<span id="client-snackbar" className={classes.message}>
-					<Icon className={classNames(classes.icon, classes.iconVariant)} />
-					{message}
-				</span>
-			}
-			action={[
-				<IconButton
-					key="close"
-					aria-label="Close"
-					color="inherit"
-					className={classes.close}
-					onClick={onClose}
-				>
-					<CloseIcon className={classNames(classes.icon, classes.closeicon)} />
-				</IconButton>,
-			]}
-			{...other}
-		/>
-	);
-}
-
-MySnackbarContent.propTypes = {
-	classes: PropTypes.object.isRequired,
-	className: PropTypes.string,
-	message: PropTypes.node,
-	onClose: PropTypes.func,
-	variant: PropTypes.oneOf(['success', 'warning', 'error', 'info']).isRequired,
-};
-
-
-
-
 
 export default withRouter(withStyles(styles)(ConfirmMovieShow));
