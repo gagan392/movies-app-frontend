@@ -13,6 +13,8 @@ import Input from "@material-ui/core/Input";
 import PropTypes from "prop-types";
 import FormHelperText from "@material-ui/core/FormHelperText";
 
+import CustomSnackBar from "../../common/SnackBar/SnackBar";
+
 const customStyles = {
 	content: {
 		top: '50%',
@@ -30,6 +32,9 @@ const styles = () => ({
 	},
 	error: {
 		color: 'red'
+	},
+	anchorOriginTopCenter: {
+		top: '4rem'
 	}
 })
 
@@ -47,6 +52,9 @@ TabContainer.propTypes = {
 
 const initObj = {
 	showModal: false,
+	showSnackBar: false,
+	snackBarMessage: "",
+	snackBarVariant: "success",
 	value: 0,
 	username: "",
 	loginpassword: "",
@@ -76,7 +84,7 @@ class Header extends Component {
 	}
 
 	openLoginModalHandler = () => {
-		this.setState({ initObj, showModal: true });
+		this.setState({ ...initObj, showModal: true });
 	}
 
 	closeLoginModalHandler = () => {
@@ -94,10 +102,31 @@ class Header extends Component {
 		this.setState(currState);
 		if (currState.usernameRequired === "dispBlock" || currState.loginpasswordRequired === "dispBlock") return;
 
-		const res = await this.props.apiClient.login(currState.username, currState.loginpassword);
-		sessionStorage.setItem("access-token", res.headers["access-token"]);
-		sessionStorage.setItem("uuid", res.data.id);
-		this.setState({ ...currState, loggedIn: true, showModal: false });
+		try {
+			const res = await this.props.apiClient.login(currState.username, currState.loginpassword);
+			sessionStorage.setItem("access-token", res.headers["access-token"]);
+			sessionStorage.setItem("uuid", res.data.id);
+			this.setState({
+				...currState,
+				userinfo: res.data,
+				loggedIn: true,
+				showModal: false,
+				showSnackBar: true,
+				snackBarMessage: "login Successfull!",
+				snackBarVariant: "success"
+			});
+		} catch (error) {
+			sessionStorage.removeItem("access-token");
+			sessionStorage.removeItem("uuid");
+			const currState = {
+				...this.state,
+				loggedIn: false,
+				showSnackBar: true,
+				snackBarMessage: "login failed. Try again!",
+				snackBarVariant: "warning"
+			}
+			this.setState(currState);
+		}
 	}
 
 	usernameChangeHandler = e => {
@@ -141,9 +170,19 @@ class Header extends Component {
 
 		try {
 			const response = await apiClient.signup(data);
-			this.setState({ registerationSuccess: response.status === "ACTIVE" });
+			this.setState({
+				registerationSuccess: response.status === "ACTIVE",
+				showSnackBar: true,
+				snackBarMessage: "Registration Successfull. Please Login!",
+				snackBarVariant: "success"
+			});
 		} catch (error) {
-			this.setState({ userExist: error.message.includes("status code 422") });
+			this.setState({
+				userExist: error.message.includes("status code 422"),
+				showSnackBar: true,
+				snackBarMessage: "User already exist. Please Login!",
+				snackBarVariant: "warning"
+			});
 		}
 
 	}
@@ -172,14 +211,35 @@ class Header extends Component {
 		})
 	}
 
+	logoutClickHandler = () => {
+		const currState = {
+			loggedIn: false,
+			showSnackBar: true,
+			snackBarMessage: "Logged out successfully!",
+			snackBarVariant: "info"
+		}
+		this.setState(currState);
+		// sessionStorage.removeItem("access-token");
+		// sessionStorage.removeItem("uuid");
+	}
+
+	snackBarCloseHandler = () => {
+		this.setState({ showSnackBar: false });
+	}
+
 	render() {
 		const { classes, showBookShowButton, movieId } = this.props;
+		console.log(" header render ", this.state);
+
 		return (
 			<div>
 				<div className="app-header">
 					<img src={logo} className="app-logo" alt="Movies App Logo" />
 					<div className="login-button">
-						<Button variant="contained" color="default" onClick={this.openLoginModalHandler}>Login</Button>
+						{!this.state.loggedIn === true ?
+							<Button variant="contained" color="default" onClick={this.openLoginModalHandler}>Login</Button>
+							:
+							<Button variant="contained" color="default" onClick={this.logoutClickHandler}>Logout</Button>}
 					</div>
 					{showBookShowButton &&
 						<Link id="bookshow-button" to={`/bookshow/${movieId}`}>
@@ -264,27 +324,20 @@ class Header extends Component {
 									</FormHelperText>
 								</FormControl><br /><br />
 
-								{this.state.registerationSuccess ?
-									<>
-										<FormControl>
-											<Typography className={classes.success} component="span">Registration Successfull. Please Login!</Typography>
-										</FormControl> <br /> <br />
-									</> : ""
-								}
-
-								{this.state.userExist ?
-									<>
-										<FormControl>
-											<Typography className={classes.error} component="span">User already exist. Please Login!</Typography>
-										</FormControl> <br /> <br />
-									</> : ""
-								}
-
 								<Button variant="contained" color="primary" onClick={this.registerButtonHandler}> Register </Button>
 							</TabContainer>
 						}
 					</Modal>
 				</div>
+				<CustomSnackBar
+					vertical="top"
+					horizontal="center"
+					open={this.state.showSnackBar}
+					onClose={this.snackBarCloseHandler}
+					classes={{ anchorOriginTopCenter: classes.anchorOriginTopCenter }}
+					variant={this.state.snackBarVariant}
+					message={this.state.snackBarMessage}
+				/>
 			</div>
 		);
 	}
