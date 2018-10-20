@@ -18,7 +18,7 @@ class ReleasedMovieGridList extends Component {
 			<GridList cellHeight={350} cols={4} className={classes.gridListReleasedMovies}>
 				{moviesData.map(movieData =>
 					<GridListTile key={movieData.id} className="released-movie-grid-item">
-						<Link key={movieData.id} to={`/details/${movieData.id}`}>
+						<Link key={movieData.id} to={`/movie/${movieData.id}`}>
 							<img src={movieData.poster_url} className="movie-poster" alt={movieData.title} />
 							<GridListTileBar title={movieData.title} />
 						</Link>

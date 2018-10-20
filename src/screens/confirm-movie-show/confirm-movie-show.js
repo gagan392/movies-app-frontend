@@ -42,9 +42,9 @@ class ConfirmMovieShow extends Component {
 
 	componentWillMount() {
 		const currState = this.state;
-		const { routeData } = this.props;
+		const { location } = this.props;
 
-		const summary = routeData.location.state;
+		const summary = location.state;
 		currState.originalTotalPrice = summary.unitPrice * summary.tickets;
 		currState.totalPrice = currState.originalTotalPrice;
 
@@ -73,7 +73,7 @@ class ConfirmMovieShow extends Component {
 		const currState = this.state;
 		const couponObj = coupons.find(coupon => coupon.code === this.state.couponCode);
 
-		if(couponObj) {
+		if (couponObj) {
 			currState.totalPrice = this.state.originalTotalPrice - ((this.state.originalTotalPrice * couponObj.value) / 100);
 			this.setState(currState);
 		}

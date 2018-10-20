@@ -46,12 +46,12 @@ class BookMovieShow extends Component {
 
 	componentWillMount() {
 		let currState = this.state;
-		const { routeData } = this.props;
+		const { match, location } = this.props;
 		currState.movie = moviesData.find(movie => {
-			return movie.id === routeData.match.params.movieId
+			return movie.id === match.params.id
 		});
-		if (routeData.location.state) {
-			const summary = routeData.location.state;
+		if (location.state) {
+			const summary = location.state;
 			currState = summary;
 		}
 
@@ -98,13 +98,13 @@ class BookMovieShow extends Component {
 	}
 
 	render() {
-		const { routeData, classes } = this.props;
+		const { match, classes } = this.props;
 		return (
 			<>
 				<Header />
 				<div className="bookShow">
 					<div className="back">
-						<Link id={`BackButton`} to={`/details/${routeData.match.params.movieId}`} className={classes.backButton}>
+						<Link id={`BackButton`} to={`/movie/${match.params.id}`} className={classes.backButton}>
 							<ChevronLeft />
 							<Typography style={{ display: "inline" }} variant="subheading" component="span">Back to Movie Details</Typography>
 						</Link>

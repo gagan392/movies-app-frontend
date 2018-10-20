@@ -57,8 +57,9 @@ class MovieDetails extends Component {
 
 	componentWillMount() {
 		const currState = this.state;
+		const { match } = this.props;
 		currState.movie = moviesData.find(movie => {
-			return movie.id === this.props.routeData.params.movieId
+			return movie.id === match.params.id
 		});
 
 		this.setState({ currState });
