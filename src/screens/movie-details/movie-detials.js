@@ -153,7 +153,7 @@ class MovieDetails extends Component {
 						<Typography><span className="bold">Artists: </span>
 							<GridList cellHeight={350} cols={2}>
 								{movie.artists != null && movie.artists.map(artist =>
-									<GridListTile key={artist.id} onClick={() => this.artistClickHandler(artist.wiki_url)}>
+									<GridListTile style={{ cursor: "pointer" }} key={artist.id} onClick={() => this.artistClickHandler(artist.wiki_url)}>
 										<img src={artist.profile_url} alt={artist.title} />
 										<GridListTileBar title={artist.first_name + artist.last_name} />
 									</GridListTile>
