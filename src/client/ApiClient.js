@@ -52,7 +52,7 @@ ApiClient.prototype.login = (username, password) => {
 		});
 }
 
-ApiClient.prototype.logout = (username, password) => {
+ApiClient.prototype.logout = () => {
 	return axios.post(`${apiBaseURL}/auth/logout`, {}, {
 			headers: {
 				"Accept": "application/json",

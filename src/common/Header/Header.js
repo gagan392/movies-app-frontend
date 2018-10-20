@@ -212,9 +212,8 @@ class Header extends Component {
 	}
 
 	logoutClickHandler = async () => {
-		const { username, loginpassword } = this.state;
 		try {
-			const res = await this.props.apiClient.logout(username, loginpassword);
+			const res = await this.props.apiClient.logout();
 			const currState = {
 				loggedIn: false,
 				showSnackBar: true,
