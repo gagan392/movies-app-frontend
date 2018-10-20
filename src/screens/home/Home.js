@@ -85,7 +85,7 @@ class Home extends Component {
 		const { upcomingMovies, releasedMovies } = this.state;
 		return (
 			<>
-				<Header />
+				<Header apiClient={this.props.apiClient}/>
 				{upcomingMovies.length > 0 && releasedMovies.length > 0 &&
 					<>
 						<UpcomingMovieGridList upcomingMovies={upcomingMovies} />

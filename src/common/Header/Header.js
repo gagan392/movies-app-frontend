@@ -5,7 +5,7 @@ import './Header.css';
 import Button from '@material-ui/core/Button';
 import logo from "../../assets/logo.svg";
 import Modal from "react-modal";
-import { Tab, Tabs } from '@material-ui/core';
+import { Tab, Tabs, withStyles } from '@material-ui/core';
 import Typography from "@material-ui/core/Typography";
 import FormControl from "@material-ui/core/FormControl";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -24,6 +24,15 @@ const customStyles = {
 	}
 };
 
+const styles = () => ({
+	success: {
+		color: 'green'
+	},
+	error: {
+		color: 'red'
+	}
+})
+
 const TabContainer = props => {
 	return (
 		<Typography component="div" style={{ padding: 0, textAlign: "center" }}>
@@ -36,61 +45,45 @@ TabContainer.propTypes = {
 	children: PropTypes.node.isRequired
 }
 
+const initObj = {
+	showModal: false,
+	value: 0,
+	username: "",
+	loginpassword: "",
+	usernameRequired: "dispNone",
+	loginpasswordRequired: "dispNone",
+	firstname: "",
+	lastname: "",
+	email: "",
+	registerpassword: "",
+	contactno: "",
+	firstnameRequired: "dispNone",
+	lastnameRequired: "dispNone",
+	emailRequired: "dispNone",
+	registerpasswordRequired: "dispNone",
+	contactnoRequired: "dispNone",
+	registerationSuccess: false,
+	userExist: false
+}
+
 class Header extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			showModal: false,
-			value: 0,
-			username: "",
-			loginpassword: "",
-			usernameRequired: "dispNone",
-			loginpasswordRequired: "dispNone",
-			firstname: "",
-			lastname: "",
-			email: "",
-			registerpassword: "",
-			contactno: "",
-			firstnameRequired: "dispNone",
-			lastnameRequired: "dispNone",
-			emailRequired: "dispNone",
-			registerpasswordRequired: "dispNone",
-			contactnoRequired: "dispNone"
-		}
+		this.state = initObj;
 	}
 
 	openLoginModalHandler = () => {
-		this.setState({
-			showModal: true,
-			value: 0,
-			username: "",
-			loginpassword: "",
-			usernameRequired: "dispNone",
-			loginpasswordRequired: "dispNone",
-			firstname: "",
-			lastname: "",
-			email: "",
-			registerpassword: "",
-			contactno: "",
-			firstnameRequired: "dispNone",
-			lastnameRequired: "dispNone",
-			emailRequired: "dispNone",
-			registerpasswordRequired: "dispNone",
-			contactnoRequired: "dispNone"
-		});
+		this.setState({ initObj, showModal: true });
 	}
 
 	closeLoginModalHandler = () => {
-		this.setState({
-			showModal: false
-		});
+		this.setState(initObj);
 	}
 
 	loginTabChangeHandler = (e, value) => {
-		this.setState({
-			value: value
-		});
+		this.setState({ ...initObj, showModal: true, value: value });
+		console.log(" tab changed ", this.state);
 	}
 
 	loginButtonHanlder = () => {
@@ -120,16 +113,34 @@ class Header extends Component {
 		});
 	}
 
-	registerButtonHandler = () => {
-		this.setState(prevState => {
-			return ({
-				firstnameRequired: prevState.firstname === "" ? "dispBlock" : "dispNone",
-				lastnameRequired: prevState.lastname === "" ? "dispBlock" : "dispNone",
-				emailRequired: prevState.email === "" ? "dispBlock" : "dispNone",
-				registerpasswordRequired: prevState.registerpassword === "" ? "dispBlock" : "dispNone",
-				contactnoRequired: prevState.contactno === "" ? "dispBlock" : "dispNone"
-			})
+	registerButtonHandler = async () => {
+		const { apiClient } = this.props;
+		const currState = this.state;
+		currState.firstnameRequired = currState.firstname === "" ? "dispBlock" : "dispNone";
+		currState.lastnameRequired = currState.lastname === "" ? "dispBlock" : "dispNone";
+		currState.emailRequired = currState.email === "" ? "dispBlock" : "dispNone";
+		currState.registerpasswordRequired = currState.registerpassword === "" ? "dispBlock" : "dispNone";
+		currState.contactnoRequired = currState.contactno === "" ? "dispBlock" : "dispNone";
+
+		this.setState(currState);
+
+		if (currState.firstnameRequired === "dispBlock" || currState.lastnameRequired === "dispBlock" || currState.emailRequired === "dispBlock" || currState.showTimeRequired === "dispBlock" || currState.registerpasswordRequired === "dispBlock" || currState.contactnoRequired === "dispBlock") return;
+
+		const data = JSON.stringify({
+			"email_address": this.state.email,
+			"first_name": this.state.firstname,
+			"last_name": this.state.lastname,
+			"mobile_number": this.state.contactno,
+			"password": this.state.registerpassword
 		});
+
+		try {
+			const response = await apiClient.signup(data);
+			this.setState({ registerationSuccess: response.status === "ACTIVE" });
+		} catch (error) {
+			this.setState({ userExist: error.message.includes("status code 422") });
+		}
+
 	}
 
 	firstnameChangeHandler = e => {
@@ -157,7 +168,8 @@ class Header extends Component {
 	}
 
 	render() {
-		const { showBookShowButton, movieId } = this.props;
+		console.log(" header render ");
+		const { classes, showBookShowButton, movieId } = this.props;
 		return (
 			<div>
 				<div className="app-header">
@@ -248,6 +260,22 @@ class Header extends Component {
 									</FormHelperText>
 								</FormControl><br /><br />
 
+								{this.state.registerationSuccess ?
+									<>
+										<FormControl>
+											<Typography className={classes.success} component="span">Registration Successfull. Please Login!</Typography>
+										</FormControl> <br /> <br />
+									</> : ""
+								}
+
+								{this.state.userExist ?
+									<>
+										<FormControl>
+											<Typography className={classes.error} component="span">User already exist. Please Login!</Typography>
+										</FormControl> <br /> <br />
+									</> : ""
+								}
+
 								<Button variant="contained" color="primary" onClick={this.registerButtonHandler}> Register </Button>
 							</TabContainer>
 						}
@@ -258,4 +286,4 @@ class Header extends Component {
 	}
 }
 
-export default Header;
+export default withStyles(styles)(Header);

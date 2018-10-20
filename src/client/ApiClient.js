@@ -23,4 +23,18 @@ ApiClient.prototype.getMovieById = (id) => {
 		});
 }
 
+ApiClient.prototype.signup = (formData) => {
+	return axios.post(`${apiBaseURL}/signup`, formData, {
+			headers: {
+				"Accept": "application/json",
+				"content-type": "application/json"
+			}
+		})
+		.then(response => {
+			return response && response.data;
+		}).catch((error) => {
+			throw error;
+		});
+}
+
 export default ApiClient;
