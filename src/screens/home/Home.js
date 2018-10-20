@@ -62,7 +62,6 @@ class Home extends Component {
 			this.getAllGenres(),
 			this.getAllArtists()
 		]);
-		console.log(" genres, artisits, ", genresList, artistsList);
 
 		this.setState({
 			releasedMovies: releasedMovies.movies,
@@ -117,7 +116,6 @@ class Home extends Component {
 
 	movieFiltersHandler = async (filterData) => {
 		const releasedMovies = await this.getFilteredReleasedMovies();
-		console.log(" filtered releasedMovies ", releasedMovies);
 		this.setState({ releasedMovies: releasedMovies.movies });
 	}
 
