@@ -76,4 +76,23 @@ ApiClient.prototype.logout = () => {
 			throw error;
 		});
 }
+
+ApiClient.prototype.getGenres = () => {
+	return axios.get(`${apiBaseURL}/genres`)
+		.then(response => {
+			return response && response.data;
+		}).catch((error) => {
+			throw error;
+		});
+}
+
+ApiClient.prototype.getArtists = () => {
+	return axios.get(`${apiBaseURL}/artists`)
+		.then(response => {
+			return response && response.data;
+		}).catch((error) => {
+			throw error;
+		});
+}
+
 export default ApiClient;

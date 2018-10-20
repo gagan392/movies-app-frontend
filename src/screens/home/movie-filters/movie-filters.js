@@ -1,8 +1,5 @@
 import React, { Component } from "react";
 import { withStyles, Card, CardContent, FormControl, Typography, InputLabel, Input, Select, MenuItem, Checkbox, ListItemText, TextField, Button } from "@material-ui/core";
-import artists from "../../../common/artists";
-import genres from "../../../common/genres";
-
 
 const styles = theme => ({
 	formControl: {
@@ -17,7 +14,7 @@ const styles = theme => ({
 
 class MovieFilters extends Component {
 	render() {
-		const { classes, genresSelected, artistsSelected, genreChangeHandler, artistChangeHandler, movieNameChangeHandler } = this.props;
+		const { classes, genresList, artistsList, genresSelected, artistsSelected, genreChangeHandler, artistChangeHandler, movieNameChangeHandler } = this.props;
 		return (
 			<Card>
 				<CardContent>
@@ -39,10 +36,10 @@ class MovieFilters extends Component {
 							input={<Input id="genres" />}
 							onChange={genreChangeHandler} >
 							<MenuItem value={0}>None</MenuItem>
-							{genres.map(genre => (
-								<MenuItem key={genre.id} value={genre.name}>
-									<Checkbox checked={genresSelected.indexOf(genre.name) > -1} />
-									<ListItemText primary={genre.name} />
+							{genresList && genresList.map(genre => (
+								<MenuItem key={genre.id} value={genre.genre}>
+									<Checkbox checked={genresSelected.indexOf(genre.genre) > -1} />
+									<ListItemText primary={genre.genre} />
 								</MenuItem>
 							))}
 						</Select>
@@ -58,7 +55,7 @@ class MovieFilters extends Component {
 							onChange={artistChangeHandler}
 						>
 							<MenuItem value={0}>None</MenuItem>
-							{artists.map(artist => (
+							{artistsList && artistsList.map(artist => (
 								<MenuItem key={artist.id} value={artist.first_name + " " + artist.last_name}>
 									<Checkbox checked={artistsSelected.indexOf(artist.first_name + " " + artist.last_name) > -1} />
 									<ListItemText primary={artist.first_name + " " + artist.last_name} />

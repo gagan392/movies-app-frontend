@@ -22,6 +22,8 @@ class Home extends Component {
 			movieName: "",
 			genres: [],
 			artists: [],
+			genresList: [],
+			artistsList: [],
 			releasedMovies: [],
 			upcomingMovies: []
 		}
@@ -41,17 +43,33 @@ class Home extends Component {
 		});
 	}
 
+	getAllGenres() {
+		const { apiClient } = this.props;
+		return apiClient.getGenres();
+	}
+
+	getAllArtists() {
+		const { apiClient } = this.props;
+		return apiClient.getArtists();
+	}
+
 	async componentWillMount() {
-		const [releasedMovies, upcomingMovies] = await Promise.all([
+		const [releasedMovies, upcomingMovies, genresList, artistsList] = await Promise.all([
 			this.getReleasedMovies(),
-			this.getUpcomingMovies()
+			this.getUpcomingMovies(),
+			this.getAllGenres(),
+			this.getAllArtists()
 		]);
+
 		this.setState({
 			releasedMovies: releasedMovies.movies,
-			upcomingMovies: upcomingMovies.movies
+			upcomingMovies: upcomingMovies.movies,
+			genresList: genresList.genres,
+			artistsList: artistsList.artists
 		});
 
 	}
+
 	movieNameChangeHandler = e => {
 		this.setState({
 			movieName: e.target.value
@@ -73,6 +91,8 @@ class Home extends Component {
 	render() {
 
 		const movieFiltersProps = {
+			genresList: this.state.genresList,
+			artistsList: this.state.artistsList,
 			genresSelected: this.state.genres,
 			artistsSelected: this.state.artists,
 			genreChangeHandler: this.genreChangeHandler,
@@ -83,7 +103,7 @@ class Home extends Component {
 		const { upcomingMovies, releasedMovies } = this.state;
 		return (
 			<>
-				<Header apiClient={this.props.apiClient}/>
+				<Header apiClient={this.props.apiClient} />
 				{upcomingMovies.length > 0 && releasedMovies.length > 0 &&
 					<>
 						<UpcomingMovieGridList upcomingMovies={upcomingMovies} />
