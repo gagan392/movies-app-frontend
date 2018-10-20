@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import { GridList, withStyles, GridListTile, GridListTileBar } from "@material-ui/core";
 
-import moviesData from "../../../common/movieData";
-
 const styles = theme => ({
 	root: {
 		display: 'flex',
@@ -32,21 +30,21 @@ const styles = theme => ({
 
 class UpcomingMovieGridList extends Component {
 	render() {
-		const { classes } = this.props;
+		const { classes, upcomingMovies } = this.props;
 		return (
 			<>
 				<div className={classes.upcomingMoviesHeading}>
 					<span>Upcoming Movies</span>
 				</div>
 				<div className={classes.root}>
-					<GridList cols={5} className={classes.gridListUpcomingMovies}>
-						{moviesData.map(movieData =>
-							<GridListTile key={movieData.id} className={classes.upcomingMoive}>
-								<img src={movieData.poster_url} alt={movieData.title} />
-								<GridListTileBar title={movieData.title} />
+					{upcomingMovies && <GridList cols={5} className={classes.gridListUpcomingMovies}>
+						{upcomingMovies.map(upcomingMovie =>
+							<GridListTile key={upcomingMovie.id} className={classes.upcomingMoive}>
+								<img src={upcomingMovie.poster_url} alt={upcomingMovie.title} />
+								<GridListTileBar title={upcomingMovie.title} />
 							</GridListTile>
 						)}
-					</GridList>
+					</GridList>}
 				</div>
 			</>
 		);

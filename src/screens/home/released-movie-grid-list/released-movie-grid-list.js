@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { Link } from 'react-router-dom';
 import { GridList, withStyles, GridListTile, GridListTileBar } from "@material-ui/core";
-import moviesData from "../../../common/movieData";
 
 const styles = () => ({
 	gridListReleasedMovies: {
@@ -12,15 +11,21 @@ const styles = () => ({
 
 class ReleasedMovieGridList extends Component {
 
+	constructor() {
+		super();
+		console.log(' ReleasedMovieGridList constructor', this.props);
+	}
+
 	render() {
-		const { classes } = this.props;
+		const { classes, releasedMovies } = this.props;
+		console.log(" ReleasedMovieGridList render ", releasedMovies);
 		return (
-			<GridList cellHeight={350} cols={4} className={classes.gridListReleasedMovies}>
-				{moviesData.map(movieData =>
-					<GridListTile key={movieData.id} className="released-movie-grid-item">
-						<Link key={movieData.id} to={`/movie/${movieData.id}`}>
-							<img src={movieData.poster_url} className="movie-poster" alt={movieData.title} />
-							<GridListTileBar title={movieData.title} />
+			releasedMovies.length > 0 && <GridList cellHeight={350} cols={4} className={classes.gridListReleasedMovies}>
+				{releasedMovies.map(releasedMovie =>
+					<GridListTile key={releasedMovie.id} className="released-movie-grid-item">
+						<Link key={releasedMovie.id} to={`/movie/${releasedMovie.id}`}>
+							<img src={releasedMovie.poster_url} className="movie-poster" alt={releasedMovie.title} />
+							<GridListTileBar title={releasedMovie.title} />
 						</Link>
 					</GridListTile>
 				)}

@@ -21,8 +21,38 @@ class Home extends Component {
 		this.state = {
 			movieName: "",
 			genres: [],
-			artists: []
+			artists: [],
+			releasedMovies: [],
+			upcomingMovies: []
 		}
+	}
+
+	getReleasedMovies() {
+		const { apiClient } = this.props;
+		return apiClient.getMovies({
+			status: "RELEASED"
+		});
+	}
+
+	getUpcomingMovies() {
+		const { apiClient } = this.props;
+		return apiClient.getMovies({
+			status: "PUBLISHED"
+		});
+	}
+
+	async componentWillMount() {
+		const [releasedMovies, upcomingMovies] = await Promise.all([
+			this.getReleasedMovies(),
+			this.getUpcomingMovies()
+		]);
+		this.setState({
+			releasedMovies: releasedMovies.movies,
+			upcomingMovies: upcomingMovies.movies
+		});
+		console.log(" releasedMovies ", releasedMovies);
+		console.log(" upcomingMovies ", upcomingMovies);
+
 	}
 	movieNameChangeHandler = e => {
 		this.setState({
@@ -52,18 +82,23 @@ class Home extends Component {
 			movieNameChangeHandler: this.movieNameChangeHandler,
 		}
 
+		const { upcomingMovies, releasedMovies } = this.state;
 		return (
 			<>
 				<Header />
-				<UpcomingMovieGridList />
-				<div className="flex-container">
-					<div className="left">
-						<ReleasedMovieGridList />
-					</div>
-					<div className="right">
-						<MovieFilters {...movieFiltersProps} />
-					</div>
-				</div>
+				{upcomingMovies.length > 0 && releasedMovies.length > 0 &&
+					<>
+						<UpcomingMovieGridList upcomingMovies={upcomingMovies} />
+						<div className="flex-container">
+							<div className="left">
+								<ReleasedMovieGridList releasedMovies={releasedMovies} />
+							</div>
+							<div className="right">
+								<MovieFilters {...movieFiltersProps} />
+							</div>
+						</div>
+					</>
+				}
 			</>
 		)
 	}
