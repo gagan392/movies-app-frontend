@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from 'react-router-dom';
 import { GridList, withStyles, GridListTile, GridListTileBar } from "@material-ui/core";
 
 const styles = theme => ({
@@ -39,10 +40,12 @@ class UpcomingMovieGridList extends Component {
 				<div className={classes.root}>
 					{upcomingMovies && <GridList cols={5} className={classes.gridListUpcomingMovies}>
 						{upcomingMovies.map(upcomingMovie =>
+						<Link key={upcomingMovie.id} to={`/movie/${upcomingMovie.id}`}>
 							<GridListTile key={upcomingMovie.id} className={classes.upcomingMoive}>
 								<img src={upcomingMovie.poster_url} alt={upcomingMovie.title} />
 								<GridListTileBar title={upcomingMovie.title} />
 							</GridListTile>
+						</Link>
 						)}
 					</GridList>}
 				</div>
