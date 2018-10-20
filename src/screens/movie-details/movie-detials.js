@@ -8,7 +8,6 @@ import Youtube from "react-youtube";
 
 import Header from "../../common/Header/Header";
 
-import moviesData from "../../common/movieData";
 import "./movie-detials.css";
 
 const styles = theme => ({
@@ -24,7 +23,7 @@ class MovieDetails extends Component {
 	constructor() {
 		super();
 		this.state = {
-			movie: {},
+			movie: null,
 			starIcons: [
 				{
 					id: 1,
@@ -55,19 +54,17 @@ class MovieDetails extends Component {
 		}
 	}
 
-	componentWillMount() {
+	async componentWillMount() {
 		const currState = this.state;
-		const { match } = this.props;
-		currState.movie = moviesData.find(movie => {
-			return movie.id === match.params.id
-		});
+		const { match, apiClient } = this.props;
 
-		this.setState({ currState });
+		currState.movie = await apiClient.getMovieById(match.params.id);
+		this.setState(currState);
 	}
 
 	_onReady(event) {
 		// access to player in all event handlers via event.target
-		event.target.pauseVideo();
+		// event.target.pauseVideo();
 	}
 
 	artistClickHandler = (url) => {
@@ -103,7 +100,7 @@ class MovieDetails extends Component {
 		}
 
 		return (
-			<div className="detials">
+			movie && <div className="detials">
 				<Header showBookShowButton={true} movieId={movie.id} />
 				<div className="back">
 					<Link id={`BackButton`} to="/" className={classes.backButton}>
