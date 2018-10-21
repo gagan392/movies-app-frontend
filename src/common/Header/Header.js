@@ -84,7 +84,7 @@ class Header extends Component {
 	}
 
 	componentDidMount() {
-		this.setState({ loggedIn: sessionStorage.getItem("access-token") !== undefined && sessionStorage.getItem("uuid") !== undefined });
+		this.setState({ loggedIn: sessionStorage.getItem("access-token") !== null && sessionStorage.getItem("uuid") !== null });
 	}
 
 	openLoginModalHandler = () => {
@@ -217,7 +217,7 @@ class Header extends Component {
 
 	logoutClickHandler = async () => {
 		try {
-			const res = await this.props.apiClient.logout();
+			await this.props.apiClient.logout();
 			const currState = {
 				loggedIn: false,
 				showSnackBar: true,
@@ -229,10 +229,13 @@ class Header extends Component {
 			sessionStorage.removeItem("uuid");
 		} catch (error) {
 			const currState = {
+				loggedIn: false,
 				showSnackBar: true,
-				snackBarMessage: "Logout failed!",
-				snackBarVariant: "error"
+				snackBarMessage: "Logged out successfully!",
+				snackBarVariant: "info"
 			}
+			sessionStorage.removeItem("access-token");
+			sessionStorage.removeItem("uuid");
 			this.setState(currState);
 		}
 
@@ -251,14 +254,14 @@ class Header extends Component {
 	}
 
 	render() {
-		const { classes, showBookShowButton, movieId } = this.props;
+		const { classes, showBookShowButton } = this.props;
 
 		return (
 			<div>
 				<div className="app-header">
 					<img src={logo} className="app-logo" alt="Movies App Logo" />
 					<div className="login-button">
-						{!this.state.loggedIn === true ?
+						{this.state.loggedIn === false ?
 							<Button variant="contained" color="default" onClick={this.openLoginModalHandler}>Login</Button>
 							:
 							<Button variant="contained" color="default" onClick={this.logoutClickHandler}>Logout</Button>}
