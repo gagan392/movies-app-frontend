@@ -60,11 +60,9 @@ class BookMovieShow extends Component {
 
 		currState.locationList = locationList;
 
-		this.setState(currState);
 		if (location.state) {
 			currState = location.state;
 		}
-
 		this.setState(currState);
 	}
 
@@ -151,6 +149,7 @@ class BookMovieShow extends Component {
 
 	ticketsChangeHandler = e => {
 		this.setState({ tickets: e.target.value.split(",") });
+		console.log(this.state.tickets);
 	}
 
 	bookShowButtonHandler = () => {
@@ -165,6 +164,7 @@ class BookMovieShow extends Component {
 		const navigateToBookingConfiramtionPage = (currState.locationRequired === "dispNone" && currState.theatreRequired === "dispNone" && currState.languageRequired === "dispNone" && currState.showDateTimeRequired === "dispNone" && currState.ticketsRequired === "dispNone");
 
 		if (navigateToBookingConfiramtionPage) {
+			console.log(" bookShowButtonHandler state ", this.state);
 			this.props.history.push({
 				pathname: `/confirm/${this.props.match.params.id}`,
 				state: this.state

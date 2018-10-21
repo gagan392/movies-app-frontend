@@ -109,4 +109,34 @@ ApiClient.prototype.getMovieShowsById = (id) => {
 		});
 }
 
+ApiClient.prototype.getCouponById = (id) => {
+	return axios.get(`${apiBaseURL}/coupons/${id}`, {
+			headers: {
+				"Accept": "application/json",
+				"Authorization": "Bearer " + sessionStorage.getItem("access-token"),
+				"content-type": "application/json"
+			}
+		})
+		.then(response => {
+			return response && response.data;
+		}).catch((error) => {
+			throw error;
+		});
+}
+
+ApiClient.prototype.bookShow = (bookingData) => {
+	return axios.post(`${apiBaseURL}/bookings`,  bookingData, {
+			headers: {
+				"Accept": "application/json",
+				"Authorization": "Bearer " + sessionStorage.getItem("access-token"),
+				"content-type": "application/json"
+			}
+		})
+		.then(response => {
+			return response && response.data;
+		}).catch((error) => {
+			throw error;
+		});
+}
+
 export default ApiClient;

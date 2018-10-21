@@ -51,35 +51,84 @@ class ConfirmMovieShow extends Component {
 
 	}
 
-	handleClick = () => {
-		this.setState({ open: true });
+	confirmBookingClickHandler = async () => {
+
+		let data = JSON.stringify({
+			"customerUuid": sessionStorage.getItem('uuid'),
+			"bookingRequest": {
+				"coupon_code": this.state.couponCode,
+				"show_id": this.state.summary.showId,
+				"tickets": [
+					this.state.summary.tickets.toString()
+				]
+			}
+		});
+
+		try {
+			await this.props.apiClient.bookShow(data);
+			this.setState({
+				open: true,
+				variant: "success",
+				message: "Booking Confirmed!",
+				bookingConfirmed: true
+			});
+		} catch (error) {
+			this.setState({
+				open: true,
+				variant: "error",
+				message: "Booking Failed. Try again!",
+				bookingConfirmed: false
+			});
+		}
 	};
 
 	snackBarCloseHandler = () => {
 		this.setState({ open: false });
-		this.props.history.push({
-			pathname: `/bookshow/${this.props.match.params.id}`,
-			state: this.state
-		});
+
+		if (this.state.bookingConfirmed === true) {
+			this.props.history.push({
+				pathname: `/bookshow/${this.props.match.params.id}`,
+				state: this.state.summary
+			});
+		}
 	};
 
 	couponChangeHandler = e => {
 		this.setState({ couponCode: e.target.value });
 	}
 
-	couponApplyClickHandler = () => {
+	couponApplyClickHandler = async () => {
 		const currState = this.state;
-		const couponObj = coupons.find(coupon => coupon.code === this.state.couponCode);
+		try {
+			if (this.state.couponCode === "") {
+				this.setState({
+					open: true,
+					variant: "warning",
+					message: "Please select a coupon!"
+				})
+				return;
+			}
 
-		if (couponObj) {
-			currState.totalPrice = this.state.originalTotalPrice - ((this.state.originalTotalPrice * couponObj.value) / 100);
-			this.setState(currState);
+			const couponObj = await this.props.apiClient.getCouponById(this.state.couponCode);
+			if (couponObj) {
+				currState.totalPrice = this.state.originalTotalPrice - ((this.state.originalTotalPrice * couponObj.value) / 100);
+				currState.open = true;
+				currState.variant = "success";
+				currState.message = "Coupon applied successfully!";
+				this.setState(currState);
+			}
+		} catch (error) {
+			this.setState({
+				open: true,
+				variant: "error",
+				message: "Coupon not valid. Try another!"
+			})
 		}
 	}
 
 	render() {
 		const { classes, match } = this.props;
-		const { vertical, horizontal, open, couponCode, summary: { location, language, showDateTime, tickets, unitPrice }, totalPrice } = this.state;
+		const { vertical, horizontal, open, variant, message, couponCode, summary: { location, language, showDateTime, tickets, unitPrice }, totalPrice } = this.state;
 
 		return (
 			<>
@@ -87,7 +136,7 @@ class ConfirmMovieShow extends Component {
 				<div className="back">
 					<Link id={`BackButton`} to={{
 						pathname: `/bookshow/${match.params.id}`,
-						state: this.state
+						state: this.state.summary
 					}} className={classes.backButton}>
 						<ChevronLeft />
 						<Typography style={{ display: "inline" }} variant="subheading" component="span">Back to Book Show</Typography>
@@ -129,13 +178,12 @@ class ConfirmMovieShow extends Component {
 							</div>
 							<br />
 
-
 							<div className="container">
 								<div className="container-left">
 									<Typography component="span">Tickets:</Typography>
 								</div>
 								<div>
-									<Typography component="span">{tickets.join()}</Typography>
+									<Typography component="span">{tickets.length + " ( Seat No: " + tickets.join() + " )"}</Typography>
 								</div>
 							</div>
 							<br />
@@ -181,7 +229,7 @@ class ConfirmMovieShow extends Component {
 							</div>
 							<br />
 
-							<Button variant="contained" color="primary" onClick={this.handleClick}>CONFIRM BOOKING</Button>
+							<Button variant="contained" color="primary" onClick={this.confirmBookingClickHandler}>CONFIRM BOOKING</Button>
 						</CardContent>
 					</Card>
 				</div>
@@ -191,8 +239,8 @@ class ConfirmMovieShow extends Component {
 					open={open}
 					onClose={this.snackBarCloseHandler}
 					classes={{ anchorOriginTopCenter: classes.anchorOriginTopCenter }}
-					variant="success"
-					message="Booking Confirmed!"
+					variant={variant}
+					message={message}
 				/>
 			</>
 		);
