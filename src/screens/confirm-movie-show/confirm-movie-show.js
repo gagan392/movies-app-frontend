@@ -39,11 +39,11 @@ class ConfirmMovieShow extends Component {
 	}
 
 	componentWillMount() {
-		const currState = this.state;
+		let currState = this.state;
 		const { location } = this.props;
-
 		const summary = location.state;
-		currState.originalTotalPrice = summary.unitPrice * summary.tickets;
+
+		currState.originalTotalPrice = summary.unitPrice * summary.tickets.length;
 		currState.totalPrice = currState.originalTotalPrice;
 
 		currState.summary = summary;
@@ -59,7 +59,7 @@ class ConfirmMovieShow extends Component {
 		this.setState({ open: false });
 		this.props.history.push({
 			pathname: `/bookshow/${this.props.match.params.id}`,
-			state: this.state.summary
+			state: this.state
 		});
 	};
 
@@ -79,14 +79,15 @@ class ConfirmMovieShow extends Component {
 
 	render() {
 		const { classes, match } = this.props;
-		const { vertical, horizontal, open, summary } = this.state;
+		const { vertical, horizontal, open, couponCode, summary: { location, language, showDateTime, tickets, unitPrice }, totalPrice } = this.state;
+
 		return (
 			<>
 				<Header />
 				<div className="back">
 					<Link id={`BackButton`} to={{
 						pathname: `/bookshow/${match.params.id}`,
-						state: summary
+						state: this.state
 					}} className={classes.backButton}>
 						<ChevronLeft />
 						<Typography style={{ display: "inline" }} variant="subheading" component="span">Back to Book Show</Typography>
@@ -103,7 +104,7 @@ class ConfirmMovieShow extends Component {
 									<Typography component="span">Location:</Typography>
 								</div>
 								<div>
-									<Typography component="span">{summary.location}</Typography>
+									<Typography component="span">{location}</Typography>
 								</div>
 							</div>
 							<br />
@@ -113,37 +114,28 @@ class ConfirmMovieShow extends Component {
 									<Typography component="span">Language:</Typography>
 								</div>
 								<div>
-									<Typography component="span">{summary.language}</Typography>
+									<Typography component="span">{language}</Typography>
 								</div>
 							</div>
 							<br />
 
 							<div className="container">
 								<div className="container-left">
-									<Typography component="span">Show Date:</Typography>
+									<Typography component="span">Show Date & Time:</Typography>
 								</div>
 								<div>
-									<Typography component="span">{summary.showDate}</Typography>
+									<Typography component="span">{showDateTime}</Typography>
 								</div>
 							</div>
 							<br />
 
-							<div className="container">
-								<div className="container-left">
-									<Typography component="span">Show Time:</Typography>
-								</div>
-								<div>
-									<Typography component="span">{summary.showTime}</Typography>
-								</div>
-							</div>
-							<br />
 
 							<div className="container">
 								<div className="container-left">
 									<Typography component="span">Tickets:</Typography>
 								</div>
 								<div>
-									<Typography component="span">{summary.tickets}</Typography>
+									<Typography component="span">{tickets.join()}</Typography>
 								</div>
 							</div>
 							<br />
@@ -153,7 +145,7 @@ class ConfirmMovieShow extends Component {
 									<Typography component="span">Unit Price:</Typography>
 								</div>
 								<div>
-									<Typography component="span">{summary.unitPrice}</Typography>
+									<Typography component="span">{unitPrice}</Typography>
 								</div>
 							</div>
 							<br />
@@ -163,10 +155,9 @@ class ConfirmMovieShow extends Component {
 									<InputLabel htmlFor="coupon">
 										<Typography>Coupon Code</Typography>
 									</InputLabel>
-									{/* <Input id="coupon" type="text" onChange={this.couponChangeHandler} /> */}
 									<Select
 										id="coupon"
-										value={this.state.couponCode}
+										value={couponCode}
 										onChange={this.couponChangeHandler}
 									>
 										{coupons.map(coupon => (
@@ -185,11 +176,10 @@ class ConfirmMovieShow extends Component {
 									<Typography component="span">Total Price:</Typography>
 								</div>
 								<div>
-									<Typography component="span">{this.state.totalPrice}</Typography>
+									<Typography component="span">{totalPrice}</Typography>
 								</div>
 							</div>
 							<br />
-
 
 							<Button variant="contained" color="primary" onClick={this.handleClick}>CONFIRM BOOKING</Button>
 						</CardContent>
@@ -200,7 +190,7 @@ class ConfirmMovieShow extends Component {
 					horizontal={horizontal}
 					open={open}
 					onClose={this.snackBarCloseHandler}
-					classes={{anchorOriginTopCenter: classes.anchorOriginTopCenter}}
+					classes={{ anchorOriginTopCenter: classes.anchorOriginTopCenter }}
 					variant="success"
 					message="Booking Confirmed!"
 				/>

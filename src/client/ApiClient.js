@@ -95,4 +95,18 @@ ApiClient.prototype.getArtists = () => {
 		});
 }
 
+ApiClient.prototype.getMovieShowsById = (id) => {
+	return axios.get(`${apiBaseURL}/movies/${id}/shows`, {}, {
+			headers: {
+				"Accept": "application/json",
+				"content-type": "application/json"
+			}
+		})
+		.then(response => {
+			return response && response.data;
+		}).catch((error) => {
+			throw error;
+		});
+}
+
 export default ApiClient;

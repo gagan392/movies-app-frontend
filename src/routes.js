@@ -18,7 +18,7 @@ class Routes extends Component {
 				<div className="main-container">
 					<Route exact path='/' render={(props) => <Home {...props} apiClient={apiClient} moviesData={moviesData} />} />
 					<Route path='/movie/:id' render={(props) => <MovieDetails {...props} apiClient={apiClient} />} />
-					<Route path='/bookshow/:id' render={(props) => <BookMovieShow {...props} />} />
+					<Route path='/bookshow/:id' render={(props) => <BookMovieShow {...props} apiClient={apiClient} />} />
 					<Route path='/confirm/:id' render={(props) => <ConfirmMovieShow {...props} />} />
 				</div>
 			</Router>
